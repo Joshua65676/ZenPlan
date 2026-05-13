@@ -6,11 +6,13 @@ class Router
 {
     private Auth $auth;
     private WorkingHours $workingHours;
+    private Events $events;
 
     public function __construct()
     {
         $this->auth = new Auth();
         $this->workingHours = new WorkingHours();
+        $this->events = new Events();
     }
 
     public function handle(): void
@@ -34,6 +36,16 @@ class Router
         if ($method === 'OPTIONS') {
             http_response_code(200);
             exit;
+        }
+
+        if (preg_match('#^/events/share/([a-f0-9]+)$#', $path, $matches)) {
+            $this->getSharedEvent($matches[1]);
+            return;
+        }
+
+        if (preg_match('#^/events/(\d+)$#', $path, $matches)) {
+            $this->handleSingleEvent((int)$matches[1], $method);
+            return;
         }
 
         switch ($path) {
@@ -71,12 +83,115 @@ class Router
             case '/settings/working-hours':
                 $this->handleWorkingHours($method);
                 break;
+            case '/events':
+                $this->handleEvents($method);
+                break;
 
             default:
                 http_response_code(404);
                 echo json_encode(['error' => 'Route not found']);
         }
     }
+
+    private function handleEvents(string $method): void
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $token = $data['token'] ?? $_GET['token'] ?? null;
+
+        if (!$token) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Unauthorized']);
+            return;
+        }
+
+        $user = $this->auth->getUserByToken($token);
+
+        if (!$user) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Invalid token']);
+            return;
+        }
+
+        if ($method === 'GET') {
+            $events = $this->events->getAllEvents($user['id']);
+            echo json_encode(['success' => true, 'events' => $events]);
+        } elseif ($method === 'POST') {
+            $title = $data['title'] ?? null;
+            $meetingType = $data['meeting_type'] ?? null;
+            $eventDate = $data['event_date'] ?? null;
+            $eventTime = $data['event_time'] ?? null;
+            $notes = $data['notes'] ?? null;
+            $guestEmail = $data['guest_email'] ?? null;
+
+            if (!$title || !$meetingType || !$eventDate || !$eventTime) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Missing required fields']);
+                return;
+            }
+
+            $event = $this->events->createEvent(
+                $user['id'],
+                $title,
+                $meetingType,
+                $eventDate,
+                $eventTime,
+                $notes,
+                $guestEmail
+            );
+
+            echo json_encode(['success' => true, 'event' => $event]);
+        }
+    }
+
+    private function handleSingleEvent(int $id, string $method): void
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $token = $data['token'] ?? $_GET['token'] ?? null;
+
+        if (!$token) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Unauthorized']);
+            return;
+        }
+
+        $user = $this->auth->getUserByToken($token);
+
+        if (!$user) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Invalid token']);
+            return;
+        }
+
+        if ($method === 'GET') {
+            $event = $this->events->getEventById($id, $user['id']);
+            if (!$event) {
+                http_response_code(404);
+                echo json_encode(['error' => 'Event not found']);
+                return;
+            }
+            echo json_encode(['success' => true, 'event' => $event]);
+        } elseif ($method === 'DELETE') {
+            $deleted = $this->events->deleteEvent($id, $user['id']);
+            if (!$deleted) {
+                http_response_code(404);
+                echo json_encode(['error' => 'Event not found']);
+                return;
+            }
+            echo json_encode(['success' => true, 'message' => 'Event deleted']);
+        }
+    }
+
+    private function getSharedEvent(string $token): void
+    {
+        $event = $this->events->getEventByShareToken($token);
+        if (!$event) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Event not found']);
+            return;
+        }
+        echo json_encode(['success' => true, 'event' => $event]);
+    }
+
 
     private function googleLogin(): void
     {

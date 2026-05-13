@@ -14,6 +14,7 @@ class Migration {
     public function run(): void {
         $this->createUsersTable();
         $this->createWorkingHoursTable();
+        $this->createEventsTable();
     }
 
     private function createUsersTable(): void {
@@ -60,4 +61,24 @@ class Migration {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         ");
     }
+
+        private function createEventsTable(): void {
+        $this->db->exec("
+            CREATE TABLE IF NOT EXISTS events (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                title VARCHAR(255) NOT NULL,
+                meeting_type ENUM('group', '1-on-1') NOT NULL,
+                event_date DATE NOT NULL,
+                event_time TIME NOT NULL,
+                notes TEXT,
+                guest_email VARCHAR(255),
+                share_token VARCHAR(64) UNIQUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        ");
+    }
+    
 }
