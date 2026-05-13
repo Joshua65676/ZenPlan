@@ -4,6 +4,7 @@ import GoogleIcon from './devicon_google.svg'
 import TimeZone from "./Icon_timezone.svg"
 import Clock from "./Icon_time.svg"
 import NotificationImg from "./image_notification.jpg"
+import Icon from "./Icon.svg"
 
 export {
     LoginImage,
@@ -11,5 +12,6 @@ export {
     GoogleIcon,
     TimeZone,
     Clock,
-    NotificationImg
+    NotificationImg,
+    Icon
 }
