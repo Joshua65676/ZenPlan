@@ -11,6 +11,10 @@ import TaskIcon from "./Task_Icon.svg"
 import RemindIcon from "./Remind_Icon.svg"
 import SettingIcon from "./setting_Icon.svg"
 import LogoutIcon from "./logout_Icon.svg"
+import Bcalendar from "./Bcalendar_Icon.svg"
+import Gclock from "./Gclock_Icon.svg"
+import Close from "./close_Icon.svg"
+import ArrowDown from "./down_Icon.svg"
 
 export {
     LoginImage,
@@ -25,5 +29,9 @@ export {
     TaskIcon,
     RemindIcon,
     SettingIcon,
-    LogoutIcon
+    LogoutIcon,
+    Bcalendar,
+    Gclock,
+    Close,
+    ArrowDown
 }
