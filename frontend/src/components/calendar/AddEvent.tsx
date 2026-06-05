@@ -68,18 +68,18 @@ const AddEvent = ({ onClose, onSubmit }: Props) => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="bg-white rounded-[10px] p-6 w-full h-157 max-w-85 shadow-custom flex flex-col gap-8"
+          className="bg-white rounded-[10px] p-6 w-85 h-157 shadow-custom flex flex-col gap-8 items-center"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="flex flex-row items-center justify-between text-center">
+          <div className="flex flex-row items-center justify-between text-center w-76">
             <div className="flex flex-row items-center justify-center gap-2 text-center">
               <img src={Bcalendar} alt="" />
               <h2 className="font-outfit font-medium text-[18px] text-black leading-[130%] tracking-normal">
                 Create Event
               </h2>
             </div>
-            <button onClick={onClose} className="">
+            <button onClick={onClose} className="pl-5 cursor-pointer">
               <img src={Close} alt="Close Icon" />
             </button>
           </div>
@@ -98,7 +98,7 @@ const AddEvent = ({ onClose, onSubmit }: Props) => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Event title"
-                className="w-76 h-8.5 rounded-xl border pl-3 py-0.5 px-[2.5px] bg-LightWhite text-Grey font-outfit font-[400px] leading-[130%] tracking-normal text-[14px]"
+                className="w-76 h-8.5 rounded-xl border pl-4.5 py-0.5 px-[2.5px] bg-LightWhite text-Grey font-outfit font-[400px] leading-[130%] tracking-normal text-[14px]"
               />
             </div>
             {/* Meeting type */}
@@ -124,8 +124,8 @@ const AddEvent = ({ onClose, onSubmit }: Props) => {
               </select>
             </div>
             {/* Date & Time */}
-            <div className="grid grid-cols-2 gap-3">
-              <div>
+            <div className="grid grid-cols-2 gap-3 w-76">
+              <div className="flex flex-col gap-2 items-start justify-start">
                 <label className="font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal">
                   Date
                 </label>
@@ -134,10 +134,10 @@ const AddEvent = ({ onClose, onSubmit }: Props) => {
                   type="date"
                   value={eventDate}
                   onChange={(e) => setEventDate(e.target.value)}
-                  className="w-35.75 pl-2 h-8.5 rounded-xl border py-0.5 px-[2.5px] bg-LightWhite font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal cursor-pointer"
+                  className="w-35.75 h-8.5 rounded-xl border py-0.5 px-[2.5px] pl-2 bg-LightWhite font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal cursor-pointer"
                 />
               </div>
-              <div>
+              <div className="flex flex-col gap-2 items-start justify-start">
                 <label className="font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal">
                   Time
                 </label>
@@ -158,6 +158,7 @@ const AddEvent = ({ onClose, onSubmit }: Props) => {
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.2 }}
+                  className="flex flex-col gap-2 items-start justify-start"
                 >
                   <label className="font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal">
                     Guest Email
@@ -166,38 +167,50 @@ const AddEvent = ({ onClose, onSubmit }: Props) => {
                     type="email"
                     value={guestEmail}
                     onChange={(e) => setGuestEmail(e.target.value)}
-                    placeholder="guest@example.com"
-                    className="w-full bg-slate-700/50 border border-slate-600 text-white placeholder-slate-500 rounded-xl py-3 px-4 focus:outline-none focus:border-violet-500 transition-all text-sm"
+                    placeholder="Guest@email.com"
+                    className="w-76 h-8.5 bg-LightWhite border font-outfit font-[400px] leading-[130%] tracking-0 align-middle text-Grey text-[14px] placeholder-slate-500 rounded-xl py-0.5 px-[2.5px] pl-4.5 focus:outline-none transition-all"
                   />
                 </motion.div>
               )}
             </AnimatePresence>
             {/* Notes */}
-            <div>
+            <div className="flex flex-col gap-2 items-start justify-start">
               <label className="font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal">
                 Notes (optional)
               </label>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="Add notes..."
+                placeholder="Add meeting agenda, preparation notes or special requirements..."
                 rows={3}
-                className="w-full bg-slate-700/50 border border-slate-600 text-white placeholder-slate-500 rounded-xl py-3 px-4 focus:outline-none focus:border-violet-500 transition-all text-sm resize-none"
+                className="w-76 h-13 align-middle placeholder-slate-500 bg-LightWhite border border-LightWhite text-Grey rounded-xl py-1.75 px-[2.5px] pl-4.5 transition-all text-[14px] font-outfit font-[400px] leading-[130%] tracking-0 resize-none"
               />
             </div>
 
             {error && <p className="text-red-400 text-xs">{error}</p>}
 
-            {/* Submit and Cancle button */}
+            {/* Submit and Cancel button */}
+            <div className="flex flex-row items-center justify-between gap-4 w-76">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={onClose}
+              disabled={loading}
+              className="w-36.25 h-8.5 bg-LightBlue hover:bg-LightBlue disabled:bg-LightBlue text-black text-[14px] leading-[130%] traking-0 font-[400px] font-outfit py-0.5 px-0.75 border border-black rounded-xl transition-all cursor-pointer"
+            >
+              {loading ? "Canceling..." : "Cancel"}
+            </motion.button>
+
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleSubmit}
               disabled={loading}
-              className="w-full bg-violet-600 hover:bg-violet-500 disabled:bg-violet-800 text-white font-semibold py-3 rounded-xl transition-all cursor-pointer"
+              className="w-36.25 h-8.5 bg-Purple hover:bg-Purple disabled:bg-Purple text-white text-[14px] leading-[130%] tracking-0 font-[400px] font-outfit py-0.5 px-0.75 rounded-xl transition-all cursor-pointer"
             >
               {loading ? "Creating..." : "Create Event"}
             </motion.button>
+            </div>
           </main>
         </motion.main>
       </motion.section>
