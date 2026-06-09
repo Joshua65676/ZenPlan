@@ -12,4 +12,6 @@
   --color-LightBlue: rgba(239, 246, 255, 1);
   --color-Violet: rgba(122, 114, 137, 1);
   --boxShadow-custom: 0px 4px 20px 0px rgba(239, 246, 255, 1);
+  --color-BorderColor: rgba(235, 234, 236, 1);
+  --color-VioletLight: rgba(236, 232, 245, 1);
 }
