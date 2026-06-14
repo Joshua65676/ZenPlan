@@ -22,7 +22,7 @@ class Router
 
         // CORS Headers
         header("Access-Control-Allow-Origin: " . getenv('FRONTEND_URL'));
-        header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+        header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
         header("Access-Control-Allow-Headers: Content-Type, Authorization");
         header("Access-Control-Allow-Credentials: true");
         header("Content-Type: application/json");
@@ -97,18 +97,19 @@ class Router
     {
         $data = json_decode(file_get_contents('php://input'), true);
         $token = $data['token'] ?? $_GET['token'] ?? null;
+        $user = null;
 
-        if (!$token) {
-            http_response_code(401);
-            echo json_encode(['error' => 'Unauthorized']);
-            return;
+        if ($token) {
+            $user = $this->auth->getUserByToken($token);
         }
 
-        $user = $this->auth->getUserByToken($token);
+        if (!$user && $this->auth->isLoggedIn()) {
+            $user = $this->auth->getSessionUser();
+        }
 
         if (!$user) {
             http_response_code(401);
-            echo json_encode(['error' => 'Invalid token']);
+            echo json_encode(['error' => 'Unauthorized']);
             return;
         }
 
@@ -147,18 +148,19 @@ class Router
     {
         $data = json_decode(file_get_contents('php://input'), true);
         $token = $data['token'] ?? $_GET['token'] ?? null;
+        $user = null;
 
-        if (!$token) {
-            http_response_code(401);
-            echo json_encode(['error' => 'Unauthorized']);
-            return;
+        if ($token) {
+            $user = $this->auth->getUserByToken($token);
         }
 
-        $user = $this->auth->getUserByToken($token);
+        if (!$user && $this->auth->isLoggedIn()) {
+            $user = $this->auth->getSessionUser();
+        }
 
         if (!$user) {
             http_response_code(401);
-            echo json_encode(['error' => 'Invalid token']);
+            echo json_encode(['error' => 'Unauthorized']);
             return;
         }
 

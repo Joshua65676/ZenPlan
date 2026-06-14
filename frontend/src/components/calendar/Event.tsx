@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import WeekStrip from "./WeekStrip";
+import EventList from "./EventList";
 import { Bcalendar } from "../../assets";
 
 const Event: React.FC = () => {
@@ -8,7 +9,7 @@ const Event: React.FC = () => {
     <section className="">
       <main className="">
         <div className="flex flex-col gap-8">
-             {/* Calender */}
+          {/* Calender */}
           <main className="flex flex-col gap-3">
             <div className="flex flex-row items-center gap-1">
               <img src={Bcalendar} alt="" />
@@ -26,9 +27,10 @@ const Event: React.FC = () => {
           <div className="flex flex-row items-center gap-1">
             <img src={Bcalendar} alt="" />
             <span className="text-black text-[14px] font-outfit font-bold tracking-0 leading-[130%]">
-                Upcoming events
+              Upcoming events
             </span>
           </div>
+          <EventList />
         </div>
       </main>
     </section>

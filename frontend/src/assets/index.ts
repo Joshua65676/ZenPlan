@@ -15,6 +15,11 @@ import Bcalendar from "./Bcalendar_Icon.svg"
 import Gclock from "./Gclock_Icon.svg"
 import Close from "./close_Icon.svg"
 import ArrowDown from "./down_Icon.svg"
+import EmptyEvent from "./Empty_Event.png"
+import Gcalendar from "./Gcalendar.svg"
+import CopyIcon from "./copy_Icon.svg"
+import DeleteIcon from "./delete_Icon.svg"
+import PeopleIcon from "./People_Icon.svg"
 
 export {
     LoginImage,
@@ -33,5 +38,10 @@ export {
     Bcalendar,
     Gclock,
     Close,
-    ArrowDown
+    ArrowDown,
+    EmptyEvent,
+    Gcalendar,
+    CopyIcon,
+    DeleteIcon,
+    PeopleIcon
 }

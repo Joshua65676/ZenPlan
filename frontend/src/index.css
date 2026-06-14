@@ -9,9 +9,11 @@
   --color-Grey: rgba(120, 118, 125, 1);
   --color-LightWhite: rgba(242, 240, 249, 1);
   --color-LightGreen: rgba(216, 247, 221, 1);
+  --color-Green: rgba(0, 166, 62, 1);
   --color-LightBlue: rgba(239, 246, 255, 1);
   --color-Violet: rgba(122, 114, 137, 1);
   --boxShadow-custom: 0px 4px 20px 0px rgba(239, 246, 255, 1);
   --color-BorderColor: rgba(235, 234, 236, 1);
   --color-VioletLight: rgba(236, 232, 245, 1);
+  --color-LightPurple: rgba(127, 103, 190, 1);
 }

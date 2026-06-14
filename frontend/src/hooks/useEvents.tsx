@@ -1,63 +1,85 @@
-import { useState, useCallback } from 'react'
-import type { Event } from '../types/event'
+import { useState, useCallback } from "react";
+import { loadAuthToken, resolveToken, storeAuthToken } from "../utils/auth";
+import type { Event } from "../types/event";
 
-const API = 'http://localhost:8080'
+const API = "http://localhost:8080";
+
+const getToken = (): string | null => {
+  const savedToken = loadAuthToken();
+  if (typeof window === "undefined") {
+    return savedToken;
+  }
+
+  const urlToken = resolveToken(new URLSearchParams(window.location.search));
+  if (urlToken && !savedToken) {
+    storeAuthToken(urlToken);
+  }
+
+  return savedToken || urlToken;
+};
 
 export const useEvents = () => {
-  const [events, setEvents] = useState<Event[]>([])
-  const [loading, setLoading] = useState(false)
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const token = localStorage.getItem('auth_token')
+  const token = getToken();
 
   const fetchEvents = useCallback(async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const res = await fetch(`${API}/events?token=${token}`, {
-        credentials: 'include'
-      })
-      const data = await res.json()
-      if (data.success) setEvents(data.events)
-    } catch {
-      console.error('Failed to fetch events')
+      const url = token ? `${API}/events?token=${token}` : `${API}/events`;
+      const res = await fetch(url, {
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (data.success) setEvents(data.events);
+      else throw new Error(data.error ?? "Failed to fetch events");
+    } catch (error) {
+      console.error("Failed to fetch events", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [token])
+  }, [token]);
 
   const createEvent = async (payload: {
-    title: string
-    meeting_type: string
-    event_date: string
-    event_time: string
-    notes: string
-    guest_email: string
+    title: string;
+    meeting_type: string;
+    event_date: string;
+    event_time: string;
+    notes: string;
+    guest_email: string;
   }) => {
-    const res = await fetch(`${API}/events`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ ...payload, token })
-    })
-    const data = await res.json()
+    const url = token ? `${API}/events?token=${token}` : `${API}/events`;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
     if (data.success) {
-      setEvents(prev => [...prev, data.event])
-      return data.event
+      setEvents((prev) => [...prev, data.event]);
+      return data.event;
     }
-    throw new Error(data.error)
-  }
+    throw new Error(data.error || "Failed to create event");
+  };
 
   const deleteEvent = async (id: number) => {
-    const res = await fetch(`${API}/events/${id}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ token })
-    })
-    const data = await res.json()
+    const url = token
+      ? `${API}/events/${id}?token=${token}`
+      : `${API}/events/${id}`;
+    const res = await fetch(url, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
+    const data = await res.json();
     if (data.success) {
-      setEvents(prev => prev.filter(e => e.id !== id))
+      setEvents((prev) => prev.filter((e) => e.id !== id));
+      return true;
     }
-  }
+    throw new Error(data.error || "Failed to delete event");
+  };
 
-  return { events, loading, fetchEvents, createEvent, deleteEvent }
-}
+  return { events, loading, fetchEvents, createEvent, deleteEvent };
+};

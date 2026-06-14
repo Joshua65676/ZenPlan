@@ -36,7 +36,7 @@ const Calendar: React.FC = () => {
   };
 
   return (
-    <section className="max-w-7xl mx-auto container w-full p-3.75">
+    <section className="max-w-7xl mx-auto container w-full">
       <main>
         <Header
           activeLink={activeLink}
@@ -50,6 +50,7 @@ const Calendar: React.FC = () => {
             onSubmit={async (data) => {
               await createEvent(data);
               setShowAddEvent(false);
+              window.location.reload();
             }}
           />
         )}
