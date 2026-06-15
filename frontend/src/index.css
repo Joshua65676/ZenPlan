@@ -14,6 +14,9 @@
   --color-Violet: rgba(122, 114, 137, 1);
   --boxShadow-custom: 0px 4px 20px 0px rgba(239, 246, 255, 1);
   --color-BorderColor: rgba(235, 234, 236, 1);
+  --color-BorderLight: rgba(215, 208, 235, 1);
   --color-VioletLight: rgba(236, 232, 245, 1);
   --color-LightPurple: rgba(127, 103, 190, 1);
+  --color-LinkGB: rgba(214, 211, 218, 1);
+  --color-PurpleNormal: rgba(127, 103, 190, 1);
 }
