@@ -20,6 +20,8 @@ import Gcalendar from "./Gcalendar.svg"
 import CopyIcon from "./copy_Icon.svg"
 import DeleteIcon from "./delete_Icon.svg"
 import PeopleIcon from "./People_Icon.svg"
+import TasksIcon from "./Task-Icon.svg"
+import AddWhite from "./Add_White.svg"
 
 export {
     LoginImage,
@@ -43,5 +45,7 @@ export {
     Gcalendar,
     CopyIcon,
     DeleteIcon,
-    PeopleIcon
+    PeopleIcon,
+    TasksIcon,
+    AddWhite
 }

@@ -7,12 +7,14 @@ class Router
     private Auth $auth;
     private WorkingHours $workingHours;
     private Events $events;
+    private Tasks $tasks;
 
     public function __construct()
     {
         $this->auth = new Auth();
         $this->workingHours = new WorkingHours();
         $this->events = new Events();
+        $this->tasks = new Tasks();
     }
 
     public function handle(): void
@@ -40,6 +42,11 @@ class Router
 
         if (preg_match('#^/events/share/([a-f0-9]+)$#', $path, $matches)) {
             $this->getSharedEvent($matches[1]);
+            return;
+        }
+
+        if (preg_match('#^/tasks/(\d+)$#', $path, $matches)) {
+            $this->handleSingleTask((int)$matches[1], $method);
             return;
         }
 
@@ -80,11 +87,17 @@ class Router
             case '/auth/verify-token':
                 $this->verifyToken();
                 break;
+
             case '/settings/working-hours':
                 $this->handleWorkingHours($method);
                 break;
+
             case '/events':
                 $this->handleEvents($method);
+                break;
+
+            case '/tasks':
+                $this->handleTasks($method);
                 break;
 
             default:
@@ -194,6 +207,91 @@ class Router
         echo json_encode(['success' => true, 'event' => $event]);
     }
 
+    private function handleTasks(string $method): void
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $token = $data['token'] ?? $_GET['token'] ?? null;
+        $user = null;
+
+        if ($token) {
+            $user = $this->auth->getUserByToken($token);
+        }
+
+        if (!$user && $this->auth->isLoggedIn()) {
+            $user = $this->auth->getSessionUser();
+        }
+
+        if (!$user) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Unauthorized']);
+            return;
+        }
+
+        if ($method === 'GET') {
+            $tasks = $this->tasks->getAllTasks($user['id']);
+            echo json_encode(['success' => true, 'tasks' => $tasks]);
+        } elseif ($method === 'POST') {
+            $title = $data['title'] ?? null;
+            $priority = $data['priority'] ?? 'low';
+            $category = $data['category'] ?? 'personal';
+            $tags = $data['tags'] ?? [];
+
+            if (!$title) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Missing required fields']);
+                return;
+            }
+
+            $task = $this->tasks->createTask(
+                $user['id'],
+                $title,
+                $priority,
+                $category,
+                $tags
+            );
+
+            echo json_encode(['success' => true, 'task' => $task]);
+        }
+    }
+
+    private function handleSingleTask(int $id, string $method): void
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $token = $data['token'] ?? $_GET['token'] ?? null;
+        $user = null;
+
+        if ($token) {
+            $user = $this->auth->getUserByToken($token);
+        }
+
+        if (!$user && $this->auth->isLoggedIn()) {
+            $user = $this->auth->getSessionUser();
+        }
+
+        if (!$user) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Unauthorized']);
+            return;
+        }
+
+        if ($method === 'GET') {
+            $task = $this->tasks->getTaskById($id, $user['id']);
+            if (!$task) {
+                http_response_code(404);
+                echo json_encode(['error' => 'Task not found']);
+                return;
+            }
+            echo json_encode(['success' => true, 'task' => $task]);
+        } elseif ($method === 'DELETE') {
+            $deleted = $this->tasks->deleteTask($id, $user['id']);
+            if (!$deleted) {
+                http_response_code(404);
+                echo json_encode(['error' => 'Task not found']);
+                return;
+            }
+            echo json_encode(['success' => true, 'message' => 'Task deleted']);
+        }
+    }
 
     private function googleLogin(): void
     {
@@ -256,24 +354,15 @@ class Router
             return;
         }
 
-        error_log("DEBUG: Starting googleCallback with code: " . substr($code, 0, 20) . "...");
-
         $user = $this->auth->handleGoogleCallback($code);
 
-        error_log("DEBUG: handleGoogleCallback returned user: " . json_encode($user));
-        error_log("DEBUG: Session data before write_close: " . json_encode($_SESSION));
-
         session_write_close();
-
-        error_log("DEBUG: Session written and closed");
 
         $frontendUrl = getenv('FRONTEND_URL');
 
         if (!$user['is_profile_setup']) {
-            error_log("DEBUG: Redirecting to setup-profile");
             header("Location: $frontendUrl/setup-profile");
         } else {
-            error_log("DEBUG: Redirecting to WorkingHoursPage");
             header("Location: $frontendUrl/working-hours");
         }
         exit;

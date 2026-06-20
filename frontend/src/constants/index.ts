@@ -26,3 +26,10 @@ export const CalendarList = [
   {id: 2, name: 'Booking links', size: "100px"},
   {id: 3, name: 'Availability', size: "89px"},
 ]
+
+export const TaskList = [
+  {id: 1, name: 'All', size: "90px"},
+  {id: 2, name: 'Pending', size: "110px"},
+  {id: 3, name: 'Completed', size: "110px"},
+  {id: 4, name: 'Overdue', size: "110px"},
+]
