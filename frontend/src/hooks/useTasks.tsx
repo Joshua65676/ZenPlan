@@ -117,5 +117,37 @@ export const useTasks = () => {
     throw new Error(data.error || "Failed to delete task");
   };
 
-  return { tasks, loading, fetchTasks, createTask, deleteTask };
+  const updateTask = async (id: number, status: Task["status"]) => {
+    let previousTasks: Task[] = [];
+    setTasks((prev) => {
+      previousTasks = prev;
+      return prev.map((task) => (task.id === id ? { ...task, status } : task));
+    });
+
+    const url = token
+      ? `${API}/tasks/${id}?token=${token}`
+      : `${API}/tasks/${id}`;
+    const res = await fetch(url, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ status }),
+    });
+    const data = (await res.json()) as {
+      success: boolean;
+      task?: Task;
+      error?: string;
+    };
+    if (data.success && data.task) {
+      setTasks((prev) =>
+        prev.map((task) => (task.id === id ? data.task! : task)),
+      );
+      return true;
+    }
+
+    setTasks(previousTasks);
+    throw new Error(data.error || "Failed to update task");
+  };
+
+  return { tasks, loading, fetchTasks, createTask, deleteTask, updateTask };
 };

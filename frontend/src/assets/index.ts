@@ -22,6 +22,7 @@ import DeleteIcon from "./delete_Icon.svg"
 import PeopleIcon from "./People_Icon.svg"
 import TasksIcon from "./Task-Icon.svg"
 import AddWhite from "./Add_White.svg"
+import NotFoundIcon from "./not_found_icon.svg"
 
 export {
     LoginImage,
@@ -47,5 +48,6 @@ export {
     DeleteIcon,
     PeopleIcon,
     TasksIcon,
-    AddWhite
+    AddWhite,
+    NotFoundIcon
 }

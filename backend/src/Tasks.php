@@ -76,4 +76,22 @@ class Tasks
         $stmt->execute([$id, $userId]);
         return $stmt->rowCount() > 0;
     }
+
+    public function updateTaskStatus(int $id, int $userId, string $status): ?array
+    {
+        $allowedStatuses = ['pending', 'completed', 'overdue'];
+        if (!in_array($status, $allowedStatuses, true)) {
+            return null;
+        }
+
+        $stmt = $this->db->prepare(
+            "UPDATE tasks SET status = ? WHERE id = ? AND user_id = ?"
+        );
+        $stmt->execute([$status, $id, $userId]);
+        if ($stmt->rowCount() === 0) {
+            return null;
+        }
+
+        return $this->getTaskById($id, $userId);
+    }
 }

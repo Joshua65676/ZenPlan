@@ -282,6 +282,22 @@ class Router
                 return;
             }
             echo json_encode(['success' => true, 'task' => $task]);
+        } elseif ($method === 'PATCH' || $method === 'PUT') {
+            $status = $data['status'] ?? null;
+            if (!in_array($status, ['pending', 'completed', 'overdue'], true)) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Invalid status value']);
+                return;
+            }
+
+            $updatedTask = $this->tasks->updateTaskStatus($id, $user['id'], $status);
+            if (!$updatedTask) {
+                http_response_code(404);
+                echo json_encode(['error' => 'Task not found or not updated']);
+                return;
+            }
+
+            echo json_encode(['success' => true, 'task' => $updatedTask]);
         } elseif ($method === 'DELETE') {
             $deleted = $this->tasks->deleteTask($id, $user['id']);
             if (!$deleted) {

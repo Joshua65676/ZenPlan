@@ -18,7 +18,8 @@ type TaskCounts = {
 };
 
 const Calendar: React.FC = () => {
-  const { tasks, fetchTasks, createTask } = useTasks();
+  const { tasks, loading, fetchTasks, createTask, deleteTask, updateTask } =
+    useTasks();
   const [activeLink, setActiveLink] = useState<number>(() => {
     if (typeof window === "undefined") return TaskList[0]?.id ?? 1;
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -36,9 +37,9 @@ const Calendar: React.FC = () => {
 
   const taskCounts: TaskCounts = {
     all: tasks.length,
-    pending: tasks.some((task) => typeof task.status !== "undefined")
-      ? tasks.filter((task) => task.status === "pending").length
-      : tasks.length,
+    pending: tasks.filter(
+      (task) => task.status !== "completed" && task.status !== "overdue",
+    ).length,
     completed: tasks.filter((task) => task.status === "completed").length,
     overdue: tasks.filter((task) => task.status === "overdue").length,
   };
@@ -46,15 +47,45 @@ const Calendar: React.FC = () => {
   const renderActiveComponent = () => {
     switch (activeLink) {
       case 1:
-        return <All />;
+        return (
+          <All
+            tasks={tasks}
+            deleteTask={deleteTask}
+            updateTask={updateTask}
+            loading={loading}
+          />
+        );
       case 2:
-        return <Pending />;
+        return (
+          <Pending
+            tasks={tasks}
+            deleteTask={deleteTask}
+            updateTask={updateTask}
+            loading={loading}
+          />
+        );
       case 3:
-        return <Completed />;
+        return (
+          <Completed
+            tasks={tasks}
+            deleteTask={deleteTask}
+            updateTask={updateTask}
+            loading={loading}
+          />
+        );
       case 4:
-        return <Overdue />;
+        return (
+          <Overdue
+            tasks={tasks}
+            deleteTask={deleteTask}
+            updateTask={updateTask}
+            loading={loading}
+          />
+        );
       default:
-        return <All />;
+        return (
+          <All tasks={tasks} deleteTask={deleteTask} updateTask={updateTask} />
+        );
     }
   };
 
