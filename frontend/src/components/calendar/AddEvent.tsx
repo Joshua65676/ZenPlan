@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {  Bcalendar, Close } from "../../assets";
+import { Bcalendar, Close } from "../../assets";
 
 interface Props {
   onClose: () => void;
@@ -23,6 +23,22 @@ const AddEvent = ({ onClose, onSubmit }: Props) => {
   const [guestEmail, setGuestEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isMeetingTypeOpen, setIsMeetingTypeOpen] = useState(false);
+  const meetingTypeRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        meetingTypeRef.current &&
+        !meetingTypeRef.current.contains(event.target as Node)
+      ) {
+        setIsMeetingTypeOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleSubmit = async () => {
     if (!title || !eventDate || !eventTime) {
@@ -109,19 +125,49 @@ const AddEvent = ({ onClose, onSubmit }: Props) => {
               >
                 Meeting type
               </label>
-              <select
-                title="Select meeting type"
-                value={meetingType}
-                onChange={(e) =>
-                  setMeetingType(e.target.value as "group" | "1-on-1")
-                }
-                className="w-76 h-8.5 rounded-xl border pl-3 py-0.5 px-[2.5px] bg-LightWhite text-black cursor-pointer font-outfit font-[400px] leading-[130%] tracking-normal text-[14px]"
-              >
-                <div className="flex flex-col gap-2">
-                  <option value="group">Group</option>
-                  <option value="1-on-1">1-on-1</option>
-                </div>
-              </select>
+
+              <div ref={meetingTypeRef} className="relative w-76">
+                <button
+                  id="meetingType"
+                  type="button"
+                  onClick={() => setIsMeetingTypeOpen((prev) => !prev)}
+                  className="w-76 h-8.5 rounded-xl border bg-LightWhite text-black cursor-pointer font-outfit font-[400px] leading-[130%] tracking-normal text-[14px] flex items-center justify-between px-3"
+                >
+                  <span>{meetingType === "group" ? "Group" : "1-on-1"}</span>
+                  <span
+                    className={`text-lg leading-none transition-transform duration-200 ${
+                      isMeetingTypeOpen ? "rotate-180" : "rotate-0"
+                    }`}
+                  >
+                    ▾
+                  </span>
+                </button>
+
+                {isMeetingTypeOpen && (
+                  <div className="absolute z-20 mt-1 w-full rounded-xl border border-LightWhite bg-white shadow-lg overflow-hidden">
+                    {[
+                      { value: "group", label: "Group" },
+                      { value: "1-on-1", label: "1-on-1" },
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => {
+                          setMeetingType(option.value as "group" | "1-on-1");
+                          setIsMeetingTypeOpen(false);
+                        }}
+                        className={`w-full px-3 py-2 text-left font-outfit text-[14px] leading-[130%] text-black transition-colors duration-150 ${
+                          meetingType === option.value
+                            ? "bg-[#F1F3FF] text-black"
+                            : "bg-white hover:bg-[#F7F8FF]"
+                        }`}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
             {/* Date & Time */}
             <div className="grid grid-cols-2 gap-3 w-76">
@@ -146,7 +192,7 @@ const AddEvent = ({ onClose, onSubmit }: Props) => {
                   type="time"
                   value={eventTime}
                   onChange={(e) => setEventTime(e.target.value)}
-         className="w-35.75 pl-2 h-8.5 rounded-xl border py-0.5 px-[2.5px] bg-LightWhite font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal cursor-pointer"
+                  className="w-35.75 pl-2 h-8.5 rounded-xl border py-0.5 px-[2.5px] bg-LightWhite font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal cursor-pointer"
                 />
               </div>
             </div>
@@ -191,25 +237,25 @@ const AddEvent = ({ onClose, onSubmit }: Props) => {
 
             {/* Submit and Cancel button */}
             <div className="flex flex-row items-center justify-between gap-4 w-76">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={onClose}
-              disabled={loading}
-              className="w-36.25 h-8.5 bg-LightBlue hover:bg-LightBlue disabled:bg-LightBlue text-black text-[14px] leading-[130%] traking-0 font-[400px] font-outfit py-0.5 px-0.75 border border-black rounded-xl transition-all cursor-pointer"
-            >
-              {loading ? "Canceling..." : "Cancel"}
-            </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onClose}
+                disabled={loading}
+                className="w-36.25 h-8.5 bg-LightBlue hover:bg-LightBlue disabled:bg-LightBlue text-black text-[14px] leading-[130%] traking-0 font-[400px] font-outfit py-0.5 px-0.75 border border-black rounded-xl transition-all cursor-pointer"
+              >
+                {loading ? "Canceling..." : "Cancel"}
+              </motion.button>
 
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleSubmit}
-              disabled={loading}
-              className="w-36.25 h-8.5 bg-Purple hover:bg-Purple disabled:bg-Purple text-white text-[14px] leading-[130%] tracking-0 font-[400px] font-outfit py-0.5 px-0.75 rounded-xl transition-all cursor-pointer"
-            >
-              {loading ? "Creating..." : "Create Event"}
-            </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleSubmit}
+                disabled={loading}
+                className="w-36.25 h-8.5 bg-Purple hover:bg-Purple disabled:bg-Purple text-white text-[14px] leading-[130%] tracking-0 font-[400px] font-outfit py-0.5 px-0.75 rounded-xl transition-all cursor-pointer"
+              >
+                {loading ? "Creating..." : "Create Event"}
+              </motion.button>
             </div>
           </main>
         </motion.main>

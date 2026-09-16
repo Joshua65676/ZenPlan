@@ -23,6 +23,7 @@ import PeopleIcon from "./People_Icon.svg"
 import TasksIcon from "./Task-Icon.svg"
 import AddWhite from "./Add_White.svg"
 import NotFoundIcon from "./not_found_icon.svg"
+import RepeatPIcon from "./repeat_Icon.svg"
 
 export {
     LoginImage,
@@ -49,5 +50,6 @@ export {
     PeopleIcon,
     TasksIcon,
     AddWhite,
-    NotFoundIcon
+    NotFoundIcon,
+    RepeatPIcon
 }

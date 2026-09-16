@@ -8,6 +8,7 @@ class Router
     private WorkingHours $workingHours;
     private Events $events;
     private Tasks $tasks;
+    private Reminder $reminders;
 
     public function __construct()
     {
@@ -15,6 +16,7 @@ class Router
         $this->workingHours = new WorkingHours();
         $this->events = new Events();
         $this->tasks = new Tasks();
+        $this->reminders = new Reminder();
     }
 
     public function handle(): void
@@ -24,7 +26,7 @@ class Router
 
         // CORS Headers
         header("Access-Control-Allow-Origin: " . getenv('FRONTEND_URL'));
-        header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
+        header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
         header("Access-Control-Allow-Headers: Content-Type, Authorization");
         header("Access-Control-Allow-Credentials: true");
         header("Content-Type: application/json");
@@ -47,6 +49,11 @@ class Router
 
         if (preg_match('#^/tasks/(\d+)$#', $path, $matches)) {
             $this->handleSingleTask((int)$matches[1], $method);
+            return;
+        }
+
+        if (preg_match('#^/reminders/(\d+)$#', $path, $matches)) {
+            $this->handleSingleReminder((int)$matches[1], $method);
             return;
         }
 
@@ -98,6 +105,10 @@ class Router
 
             case '/tasks':
                 $this->handleTasks($method);
+                break;
+
+            case '/reminders':
+                $this->handleReminders($method);
                 break;
 
             default:
@@ -307,6 +318,136 @@ class Router
             }
             echo json_encode(['success' => true, 'message' => 'Task deleted']);
         }
+    }
+
+    private function handleReminders(string $method): void
+    {
+        $data = json_decode(file_get_contents('php://input'), true) ?? [];
+        $token = $data['token'] ?? $_GET['token'] ?? null;
+        $user = null;
+
+        if ($token) {
+            $user = $this->auth->getUserByToken($token);
+        }
+
+        if (!$user && $this->auth->isLoggedIn()) {
+            $user = $this->auth->getSessionUser();
+        }
+
+        if (!$user) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Unauthorized']);
+            return;
+        }
+
+        if ($method === 'GET') {
+            $reminders = $this->reminders->getAllReminders($user['id']);
+            echo json_encode(['success' => true, 'reminders' => $reminders]);
+            return;
+        }
+
+        if ($method === 'POST') {
+            $title = trim((string)($data['title'] ?? ''));
+            $reminderDate = $data['reminder_date'] ?? null;
+            $reminderTime = $data['reminder_time'] ?? null;
+            $notes = $data['notes'] ?? null;
+            $reminder = $data['category'] ?? $data['reminder'] ?? 'one-time only';
+            $isActive = filter_var($data['is_active'] ?? true, FILTER_VALIDATE_BOOLEAN);
+
+            if (!$title || !$reminderDate || !$reminderTime) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Title, date and time are required']);
+                return;
+            }
+
+            $createdReminder = $this->reminders->createReminder(
+                $user['id'],
+                $title,
+                $reminderDate,
+                $reminderTime,
+                $notes,
+                $reminder,
+                $isActive
+            );
+
+            echo json_encode(['success' => true, 'reminder' => $createdReminder]);
+            return;
+        }
+
+        http_response_code(405);
+        echo json_encode(['error' => 'Method not allowed']);
+    }
+
+    private function handleSingleReminder(int $id, string $method): void
+    {
+        $data = json_decode(file_get_contents('php://input'), true) ?? [];
+        $token = $data['token'] ?? $_GET['token'] ?? null;
+        $user = null;
+
+        if ($token) {
+            $user = $this->auth->getUserByToken($token);
+        }
+
+        if (!$user && $this->auth->isLoggedIn()) {
+            $user = $this->auth->getSessionUser();
+        }
+
+        if (!$user) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Unauthorized']);
+            return;
+        }
+
+        if ($method === 'GET') {
+            $reminder = $this->reminders->getReminderById($id, $user['id']);
+            if (!$reminder) {
+                http_response_code(404);
+                echo json_encode(['error' => 'Reminder not found']);
+                return;
+            }
+
+            echo json_encode(['success' => true, 'reminder' => $reminder]);
+            return;
+        }
+
+        if ($method === 'DELETE') {
+            $deleted = $this->reminders->deleteReminder($id, $user['id']);
+            if (!$deleted) {
+                http_response_code(404);
+                echo json_encode(['error' => 'Reminder not found']);
+                return;
+            }
+
+            echo json_encode(['success' => true, 'message' => 'Reminder deleted']);
+            return;
+        }
+
+        if ($method === 'PATCH' || $method === 'PUT') {
+            if (!array_key_exists('is_active', $data)) {
+                http_response_code(400);
+                echo json_encode(['error' => 'is_active is required']);
+                return;
+            }
+
+            $isActive = filter_var($data['is_active'], FILTER_VALIDATE_BOOLEAN);
+            $updatedReminder = $this->reminders->updateReminderStatus(
+                $id,
+                $user['id'],
+                $isActive
+            );
+
+            if (!$updatedReminder) {
+                http_response_code(404);
+                echo json_encode(['error' => 'Reminder not found']);
+                return;
+            }
+
+            echo json_encode(['success' => true, 'reminder' => $updatedReminder]);
+            return;
+        }
+
+        http_response_code(405);
+        echo json_encode(['error' => 'Method not allowed']);
     }
 
     private function googleLogin(): void

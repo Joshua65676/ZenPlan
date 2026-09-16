@@ -19,6 +19,7 @@ class Migration
         $this->createWorkingHoursTable();
         $this->createEventsTable();
         $this->createTasksTable();
+        $this->createRemindersTable();
     }
 
     private function createUsersTable(): void
@@ -110,6 +111,33 @@ class Migration
         if ($stmt->rowCount() === 0) {
             $this->db->exec(
                 "ALTER TABLE tasks ADD COLUMN status ENUM('pending','completed','overdue') DEFAULT 'pending' AFTER tags"
+            );
+        }
+    }
+
+    private function createRemindersTable(): void
+    {
+        $this->db->exec("
+            CREATE TABLE IF NOT EXISTS reminders (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                title VARCHAR(255) NOT NULL,
+                reminder_date DATE NOT NULL,
+                reminder_time TIME NOT NULL,
+                notes TEXT,
+                reminder ENUM('one-time only', 'daily', 'weekly', 'monthly') DEFAULT 'one-time only',
+                is_active BOOLEAN NOT NULL DEFAULT TRUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        ");
+
+        $stmt = $this->db->prepare("SHOW COLUMNS FROM reminders LIKE 'is_active'");
+        $stmt->execute();
+        if ($stmt->rowCount() === 0) {
+            $this->db->exec(
+                "ALTER TABLE reminders ADD COLUMN is_active BOOLEAN NOT NULL DEFAULT TRUE AFTER reminder"
             );
         }
     }

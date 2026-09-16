@@ -1,62 +1,48 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { TasksIcon, Close } from "../../assets";
+import { Clock, Close, Gclock } from "../../assets";
 
-const priorityOptions = ["low", "medium", "high"] as const;
 const categoryOptions = [
-  "personal",
-  "work",
-  "health",
-  "finance",
-  "education",
-  "home",
-  "travel",
-  "shopping",
+  "One-time only",
+  "Daily",
+  "Weekly",
+  "Monthly",
 ] as const;
 
-type Priority = (typeof priorityOptions)[number];
 type Category = (typeof categoryOptions)[number];
 
-type TaskPayload = {
+type RemindPayload = {
   title: string;
-  priority: Priority;
   category: Category;
-  tags: string[];
+  reminder_date: string;
+  reminder_time: string;
+  notes: string;
+  is_active: boolean;
 };
 
 interface Props {
   onClose: () => void;
-  onSubmit: (data: TaskPayload) => Promise<void>;
+  onSubmit: (data: RemindPayload) => Promise<void>;
 }
-const tagOptions = [
-  "urgents",
-  "important",
-  "hospital",
-  "quick",
-  "planning",
-  "calls",
-  "meeting",
-];
 
-const AddTask = ({ onClose, onSubmit }: Props) => {
+const AddReminder = ({ onClose, onSubmit }: Props) => {
   const [title, setTitle] = useState("");
-  const [priority, setPriority] = useState<Priority>("low");
-  const [category, setCategory] = useState<Category>("personal");
-  const [tags, setTags] = useState<string[]>([]);
+  const [category, setCategory] = useState<Category>("One-time only");
+  const [reminderDate, setReminderDate] = useState("");
+  const [reminderTime, setReminderTime] = useState("");
+  const [notes, setNotes] = useState("");
+  const [isActive, setIsActive] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [isPriorityOpen, setIsPriorityOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-  const priorityRef = useRef<HTMLDivElement | null>(null);
   const categoryRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-      if (priorityRef.current && !priorityRef.current.contains(target)) {
-        setIsPriorityOpen(false);
-      }
-      if (categoryRef.current && !categoryRef.current.contains(target)) {
+      if (
+        categoryRef.current &&
+        !categoryRef.current.contains(event.target as Node)
+      ) {
         setIsCategoryOpen(false);
       }
     };
@@ -65,17 +51,9 @@ const AddTask = ({ onClose, onSubmit }: Props) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const toggleTag = (value: string) => {
-    setTags((prev) =>
-      prev.includes(value)
-        ? prev.filter((tag) => tag !== value)
-        : [...prev, value],
-    );
-  };
-
   const handleSubmit = async () => {
-    if (!title.trim()) {
-      setError("Task title is required");
+    if (!title || !reminderDate || !reminderTime) {
+      setError("Title, date and time are required");
       return;
     }
 
@@ -84,14 +62,16 @@ const AddTask = ({ onClose, onSubmit }: Props) => {
     try {
       await onSubmit({
         title: title.trim(),
-        priority,
         category,
-        tags,
+        reminder_date: reminderDate,
+        reminder_time: reminderTime,
+        notes,
+        is_active: isActive,
       });
       onClose();
     } catch (error) {
       setError(
-        error instanceof Error ? error.message : "Failed to create task",
+        error instanceof Error ? error.message : "Failed to create reminder",
       );
     } finally {
       setLoading(false);
@@ -117,9 +97,9 @@ const AddTask = ({ onClose, onSubmit }: Props) => {
         >
           <div className="flex flex-row items-center justify-between w-full">
             <div className="flex flex-row items-center gap-2">
-              <img src={TasksIcon} alt="Task Icon" />
+              <img src={Clock} alt="Task Icon" />
               <h2 className="font-outfit font-medium text-[18px] text-black leading-[130%] tracking-normal">
-                Create Task
+                Create Reminder
               </h2>
             </div>
             <button onClick={onClose} className="pl-5 cursor-pointer">
@@ -131,91 +111,90 @@ const AddTask = ({ onClose, onSubmit }: Props) => {
             <div className="flex flex-col gap-5 items-start justify-start w-full">
               <div className="flex flex-col gap-2 items-start justify-start w-full">
                 <label
-                  htmlFor="task-title"
+                  htmlFor="reminder-title"
                   className="font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal"
                 >
-                  Task Title
+                  Title
                 </label>
                 <input
-                  id="task-title"
+                  id="reminder-title"
                   type="text"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Task title"
+                  placeholder="Enter reminder title"
                   className="w-full h-8.5 rounded-xl border pl-4.5 py-0.5 px-[2.5px] bg-LightWhite text-Grey font-outfit font-[400px] leading-[130%] tracking-normal text-[14px]"
                 />
               </div>
 
+              {/* Notes */}
+              <div className="flex flex-col gap-2 items-start justify-start w-full">
+                <label className="font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal">
+                  Note
+                </label>
+                <textarea
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Add additional details (optional)"
+                  rows={3}
+                  className="w-full h-13 align-middle placeholder-slate-500 bg-LightWhite border border-LightWhite text-Grey rounded-xl py-1.75 px-[2.5px] pl-4.5 transition-all text-[14px] font-outfit font-[400px] leading-[130%] tracking-0 resize-none"
+                />
+              </div>
+
+              {/* Date & Time */}
               <div className="grid grid-cols-2 gap-3 w-full">
                 <div className="flex flex-col gap-2 items-start justify-start">
-                  <label
-                    htmlFor="task-priority"
-                    className="font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal"
-                  >
-                    Priority
+                  <label className="font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal">
+                    Due Date
                   </label>
-
-                  <div ref={priorityRef} className="relative w-full">
-                    <button
-                      id="task-priority"
-                      type="button"
-                      onClick={() => setIsPriorityOpen((prev) => !prev)}
-                      className="w-full h-8.5 rounded-xl border bg-LightWhite text-black cursor-pointer font-outfit font-[400px] leading-[130%] tracking-normal text-[14px] flex items-center justify-between px-3"
-                    >
-                      <span>
-                        {priority.charAt(0).toUpperCase() + priority.slice(1)}
-                      </span>
-                      <span
-                        className={`text-lg leading-none transition-transform duration-200 ${
-                          isPriorityOpen ? "rotate-180" : "rotate-0"
-                        }`}
-                      >
-                        ▾
-                      </span>
-                    </button>
-
-                    {isPriorityOpen && (
-                      <div className="absolute z-20 mt-1 w-full rounded-xl border border-LightWhite bg-white shadow-lg overflow-hidden">
-                        {priorityOptions.map((option) => (
-                          <button
-                            key={option}
-                            type="button"
-                            onClick={() => {
-                              setPriority(option);
-                              setIsPriorityOpen(false);
-                            }}
-                            className={`w-full px-3 py-2 text-left font-outfit text-[14px] leading-[130%] text-black transition-colors duration-150 ${
-                              priority === option
-                                ? "bg-[#F1F3FF] text-black"
-                                : "bg-white hover:bg-[#F7F8FF]"
-                            }`}
-                          >
-                            {option.charAt(0).toUpperCase() + option.slice(1)}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <input
+                    title="date"
+                    type="date"
+                    value={reminderDate}
+                    onChange={(e) => setReminderDate(e.target.value)}
+                    className="w-full h-8.5 rounded-xl border py-0.5 px-[2.5px] pl-2 bg-LightWhite font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal cursor-pointer"
+                  />
                 </div>
+                <div className="flex flex-col gap-2 items-start justify-start">
+                  <label className="font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal">
+                    Due Time
+                  </label>
+                  <input
+                    title="time"
+                    type="time"
+                    value={reminderTime}
+                    onChange={(e) => setReminderTime(e.target.value)}
+                    className="w-full pl-2 h-8.5 rounded-xl border py-0.5 px-[2.5px] bg-LightWhite font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal cursor-pointer"
+                  />
+                </div>
+              </div>
 
+              <div className="w-full">
                 <div className="flex flex-col gap-2 items-start justify-start">
                   <label
-                    htmlFor="task-category"
+                    htmlFor="reminder-category"
                     className="font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal"
                   >
-                    Category
+                    Reminder
                   </label>
 
                   <div ref={categoryRef} className="relative w-full">
                     <button
-                      id="task-category"
+                      id="reminder-category"
                       type="button"
                       onClick={() => setIsCategoryOpen((prev) => !prev)}
                       className="w-full h-8.5 rounded-xl border bg-LightWhite text-black cursor-pointer font-outfit font-[400px] leading-[130%] tracking-normal text-[14px] flex items-center justify-between px-3"
                     >
-                      <span>
-                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      <span className="flex items-center gap-2 min-w-0">
+                        <img
+                          src={Gclock}
+                          alt="Reminder category icon"
+                          className="w-4 h-4 shrink-0"
+                        />
+                        <span className="truncate">
+                          {category.charAt(0).toUpperCase() + category.slice(1)}
+                        </span>
                       </span>
+
                       <span
                         className={`text-lg leading-none transition-transform duration-200 ${
                           isCategoryOpen ? "rotate-180" : "rotate-0"
@@ -226,7 +205,7 @@ const AddTask = ({ onClose, onSubmit }: Props) => {
                     </button>
 
                     {isCategoryOpen && (
-                      <div className="absolute z-20 mt-1 w-full rounded-xl border border-LightWhite bg-white shadow-lg overflow-hidden max-h-60 overflow-y-auto">
+                      <div className="absolute z-20 mt-1 w-full rounded-xl border border-LightWhite bg-white shadow-lg overflow-hidden">
                         {categoryOptions.map((option) => (
                           <button
                             key={option}
@@ -250,26 +229,25 @@ const AddTask = ({ onClose, onSubmit }: Props) => {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-2 items-start justify-start w-full">
-                <label className="font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal">
-                  Tags
-                </label>
-                <div className="flex flex-wrap gap-0.5 w-full">
-                  {tagOptions.map((tag) => (
-                    <button
-                      key={tag}
-                      type="button"
-                      onClick={() => toggleTag(tag)}
-                      className={`rounded-[5px] px-1.5 flex items-center text-center text-[12px] font-outfit transition-all h-4 cursor-pointer${
-                        tags.includes(tag)
-                          ? "text-white cursor-pointer flex items-center border-Grey border"
-                          : "text-black cursor-pointer"
-                      }`}
-                    >
-                      #{tag}
-                    </button>
-                  ))}
-                </div>
+              <div className="flex flex-row items-center gap-2">
+                <button
+                  type="button"
+                  title={isActive ? "Deactivate reminder" : "Activate reminder"}
+                  aria-pressed={isActive}
+                  onClick={() => setIsActive((prev) => !prev)}
+                  className={`relative w-10 h-6 rounded-full transition-all duration-300 cursor-pointer ${
+                    isActive ? "bg-violet-600" : "bg-gray-300"
+                  }`}
+                >
+                  <span
+                    className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all duration-300 ${
+                      isActive ? "left-5" : "left-1"
+                    }`}
+                  />
+                </button>
+                <span className="font-outfit font-bold text-[14px] leading-[130%] tracking-[0%] text-black">
+                  {isActive ? "Active reminder" : "Inactive reminder"}
+                </span>
               </div>
             </div>
             {error && <p className="text-red-400 text-xs">{error}</p>}
@@ -291,7 +269,7 @@ const AddTask = ({ onClose, onSubmit }: Props) => {
                 disabled={loading}
                 className="w-47 h-8.5 bg-Purple hover:bg-Purple disabled:bg-Purple text-white text-[14px] leading-[130%] tracking-0 font-[400px] font-outfit py-0.5 px-0.75 rounded-xl transition-all cursor-pointer"
               >
-                {loading ? "Creating..." : "Create Task"}
+                {loading ? "Creating..." : "Create Reminder"}
               </motion.button>
             </div>
           </main>
@@ -301,4 +279,4 @@ const AddTask = ({ onClose, onSubmit }: Props) => {
   );
 };
 
-export default AddTask;
+export default AddReminder;

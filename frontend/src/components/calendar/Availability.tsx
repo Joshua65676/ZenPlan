@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { DAYS, TIMEZONES } from "../../constants";
@@ -24,9 +24,25 @@ const Availability = () => {
   );
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
+  const [isTimezoneOpen, setIsTimezoneOpen] = useState(false);
+  const timezoneRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = resolveToken(searchParams);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        timezoneRef.current &&
+        !timezoneRef.current.contains(event.target as Node)
+      ) {
+        setIsTimezoneOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const queryToken = searchParams.get("token");
@@ -137,7 +153,9 @@ const Availability = () => {
         <main className="flex flex-col items-center gap-3">
           {/* main time */}
           <main className="flex flex-col gap-6 w-113.25">
-            <h2 className="font-outfit font-semibold text-[20px] leading-[130%] tracking-0 text-PurpleNormal">Working hours</h2>
+            <h2 className="font-outfit font-semibold text-[20px] leading-[130%] tracking-0 text-PurpleNormal">
+              Working hours
+            </h2>
             <div className="flex flex-row gap-2 text-start">
               <img src={TimeZone} alt="Timezone" />
               <span className="font-outfit font-bold items-center flex text-black text-[14px] leading-[130%] tracking-normal">
@@ -145,18 +163,44 @@ const Availability = () => {
               </span>
             </div>
             {/* Select timezone: */}
-            <select
-              title="timezone"
-              value={timezone}
-              onChange={(e) => setTimezone(e.target.value)}
-              className="w-112.5 h-11.25 bg-LightWhite border border-Grey text-black text-[16px] font-[400px] leading-[130%] tracking-normal font-outfit rounded-xl px-1.25 p-2.5 transition-all cursor-pointer"
-            >
-              {TIMEZONES.map((tz) => (
-                <option key={tz} value={tz}>
-                  {tz}
-                </option>
-              ))}
-            </select>
+            <div ref={timezoneRef} className="relative w-112.5">
+              <button
+                type="button"
+                onClick={() => setIsTimezoneOpen((prev) => !prev)}
+                className="w-full h-11.25 bg-LightWhite border border-Grey text-black text-[16px] font-[400px] leading-[130%] tracking-normal font-outfit rounded-xl px-3 py-2.5 transition-all cursor-pointer flex items-center justify-between"
+              >
+                <span>{timezone}</span>
+                <span
+                  className={`text-lg leading-none transition-transform duration-200 ${
+                    isTimezoneOpen ? "rotate-180" : "rotate-0"
+                  }`}
+                >
+                  ▾
+                </span>
+              </button>
+
+              {isTimezoneOpen && (
+                <div className="absolute z-20 mt-1 w-full rounded-xl border border-LightWhite bg-white shadow-lg overflow-hidden max-h-60 overflow-y-auto">
+                  {TIMEZONES.map((tz) => (
+                    <button
+                      key={tz}
+                      type="button"
+                      onClick={() => {
+                        setTimezone(tz);
+                        setIsTimezoneOpen(false);
+                      }}
+                      className={`w-full px-3 py-2 text-left font-outfit text-[16px] leading-[130%] text-black transition-colors duration-150 ${
+                        timezone === tz
+                          ? "bg-[#F1F3FF] text-black"
+                          : "bg-white hover:bg-[#F7F8FF]"
+                      }`}
+                    >
+                      {tz}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             {/* Select working hours Title: */}
             <div className="flex flex-row gap-2 text-start">
               <img src={Clock} alt="Clock" />

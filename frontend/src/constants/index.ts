@@ -33,3 +33,9 @@ export const TaskList = [
   {id: 3, name: 'Completed', size: "110px"},
   {id: 4, name: 'Overdue', size: "110px"},
 ]
+
+export const ReminderList = [
+  {id: 1, name: 'All', size: "56px"},
+  {id: 2, name: 'Active', size: "79px"},
+  {id: 3, name: 'Inactive', size: "86px"}
+]
