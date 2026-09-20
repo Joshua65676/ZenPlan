@@ -24,12 +24,12 @@ const Profile: React.FC = () => {
       <div className="w-62 border-[0.5px] text-white"></div>
 
       <div className="flex flex-row items-center justify-center gap-3">
-        <button className="flex cursor-pointer h-9.5 w-10.25 items-center justify-center py-[2.5px] px-2 overflow-hidden rounded-xl bg-Violet text-[14px] font-[400px] leading-[130%] tracking-normal font-outfit text-white">
+        <button>
           {avatarUrl ? (
             <img
               src={avatarUrl}
               alt={`${displayName} profile`}
-              className="h-full w-full object-cover"
+              className="h-10 w-10 rounded-xl object-cover"
             />
           ) : (
             <span>{initials}</span>

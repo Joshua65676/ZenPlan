@@ -23,18 +23,28 @@ class Auth
         $this->client->setClientId(getenv('GOOGLE_CLIENT_ID'));
         $this->client->setClientSecret(getenv('GOOGLE_CLIENT_SECRET'));
         $this->client->setRedirectUri(getenv('GOOGLE_REDIRECT_URI'));
-        $this->client->addScope('email');
-        $this->client->addScope('profile');
+
+        $this->client->addScope('openid');
+        $this->client->addScope('https://www.googleapis.com/auth/userinfo.email');
+        $this->client->addScope('https://www.googleapis.com/auth/userinfo.profile');
     }
 
-    public function getGoogleAuthUrl(): string
+    public function getGoogleAuthUrl(bool $rememberMe = false): string
     {
-        return $this->client->createAuthUrl();
+        $state = $rememberMe ? 'remember_me' : 'session_only';
+        return $this->client->createAuthUrl(null, ['state' => $state]);
     }
 
     public function handleGoogleCallback(string $code): array
     {
         try {
+            $rememberMe = false;
+            $state = $_GET['state'] ?? null;
+
+            if ($state === 'remember_me') {
+                $rememberMe = true;
+            }
+
             $token = $this->client->fetchAccessTokenWithAuthCode($code);
 
             if (isset($token['error'])) {
@@ -50,6 +60,15 @@ class Auth
 
             error_log("DEBUG: About to store user in session: " . json_encode($user));
             $this->storeUserInSession($user);
+
+            if ($rememberMe) {
+                $this->createRememberMeToken((int) $user['id']);
+            } else {
+                $stmt = $this->db->prepare("DELETE FROM remember_me_tokens WHERE user_id = ?");
+                $stmt->execute([(int) $user['id']]);
+                $this->clearRememberMeCookie();
+            }
+
             error_log("DEBUG: User stored in session: " . json_encode($_SESSION['user'] ?? 'FAILED'));
 
             return $user;
@@ -59,6 +78,95 @@ class Auth
             echo json_encode(['error' => $e->getMessage()]);
             exit;
         }
+    }
+
+    public function handleRememberMeLogin(): bool
+    {
+        if ($this->isLoggedIn()) {
+            return true;
+        }
+
+        $token = $_COOKIE['remember_me'] ?? null;
+        if (!$token) {
+            return false;
+        }
+
+        $tokenHash = hash('sha256', $token);
+        $stmt = $this->db->prepare("SELECT * FROM remember_me_tokens WHERE token_hash = ? AND expires_at > NOW() LIMIT 1");
+        $stmt->execute([$tokenHash]);
+        $rememberMeToken = $stmt->fetch();
+
+        if (!$rememberMeToken) {
+            $this->clearRememberMeCookie();
+            return false;
+        }
+
+        $user = $this->getCurrentUser((int) $rememberMeToken['user_id']);
+        if (!$user) {
+            $this->clearRememberMeCookie();
+            return false;
+        }
+
+        $this->storeUserInSession($user);
+        $this->rotateRememberMeToken((int) $rememberMeToken['id']);
+
+        return true;
+    }
+
+    public function createRememberMeToken(int $userId): void
+    {
+        $token = bin2hex(random_bytes(32));
+        $expiresAt = time() + 2592000;
+        $expiresAtDb = date('Y-m-d H:i:s', $expiresAt);
+
+        $stmt = $this->db->prepare(
+            "INSERT INTO remember_me_tokens (user_id, token_hash, expires_at, last_used_at)
+            VALUES (?, ?, ?, NOW())
+            ON DUPLICATE KEY UPDATE token_hash = VALUES(token_hash), expires_at = VALUES(expires_at), last_used_at = NOW(), updated_at = NOW()"
+        );
+        $stmt->execute([$userId, hash('sha256', $token), $expiresAtDb]);
+
+        $this->setRememberMeCookie($token, $expiresAt);
+    }
+
+    private function rotateRememberMeToken(int $tokenId): void
+    {
+        $newToken = bin2hex(random_bytes(32));
+        $expiresAt = time() + 2592000;
+        $expiresAtDb = date('Y-m-d H:i:s', $expiresAt);
+
+        $stmt = $this->db->prepare(
+            "UPDATE remember_me_tokens
+            SET token_hash = ?, expires_at = ?, last_used_at = NOW(), updated_at = NOW()
+            WHERE id = ?"
+        );
+        $stmt->execute([hash('sha256', $newToken), $expiresAtDb, $tokenId]);
+
+        $this->setRememberMeCookie($newToken, $expiresAt);
+    }
+
+    private function setRememberMeCookie(string $token, int $expiresAt): void
+    {
+        setcookie('remember_me', $token, [
+            'expires' => $expiresAt,
+            'path' => '/',
+            'domain' => '',
+            'secure' => false,
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
+    }
+
+    private function clearRememberMeCookie(): void
+    {
+        setcookie('remember_me', '', [
+            'expires' => time() - 3600,
+            'path' => '/',
+            'domain' => '',
+            'secure' => false,
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
     }
 
     private function saveUser(mixed $googleUser): array
@@ -81,24 +189,36 @@ class Auth
 
             $stmt = $this->db->prepare("SELECT * FROM users WHERE google_id = ?");
             $stmt->execute([$googleId]);
-            return $stmt->fetch();
-        } else {
-            $stmt = $this->db->prepare("
-                INSERT INTO users (google_id, email, name, google_avatar)
-                VALUES (?, ?, ?, ?)
-            ");
-            $stmt->execute([$googleId, $email, $name, $avatar]);
-
-            return [
-                'id' => $this->db->lastInsertId(),
-                'google_id' => $googleId,
-                'email' => $email,
-                'name' => $name,
-                'google_avatar' => $avatar,
-                'profile_picture' => null,
-                'is_profile_setup' => false
-            ];
+            $user = $stmt->fetch();
+            return $this->normalizeUser($user);
         }
+
+        $stmt = $this->db->prepare("
+            INSERT INTO users (google_id, email, name, google_avatar)
+            VALUES (?, ?, ?, ?)
+        ");
+        $stmt->execute([$googleId, $email, $name, $avatar]);
+
+        return $this->normalizeUser([
+            'id' => $this->db->lastInsertId(),
+            'google_id' => $googleId,
+            'email' => $email,
+            'name' => $name,
+            'google_avatar' => $avatar,
+            'profile_picture' => null,
+            'is_profile_setup' => false
+        ]);
+    }
+
+    private function normalizeUser(?array $user): ?array
+    {
+        if (!$user) {
+            return null;
+        }
+
+        $user['email'] = $user['email'] ?? $user['gmail'] ?? null;
+        $user['gmail'] = $user['gmail'] ?? $user['email'] ?? null;
+        return $user;
     }
 
     public function setupProfile(int $userId, ?string $profilePicture = null): array
@@ -118,7 +238,40 @@ class Auth
 
         $stmt = $this->db->prepare("SELECT * FROM users WHERE id = ?");
         $stmt->execute([$userId]);
-        $user = $stmt->fetch();
+        $user = $this->normalizeUser($stmt->fetch());
+
+        $this->storeUserInSession($user);
+
+        return $user;
+    }
+
+    public function updateProfile(int $userId, string $name, string $email): array
+    {
+        $safeName = trim($name);
+        $safeEmail = trim($email);
+
+        if ($safeName === '') {
+            throw new \InvalidArgumentException('Name is required');
+        }
+
+        if (!filter_var($safeEmail, FILTER_VALIDATE_EMAIL)) {
+            throw new \InvalidArgumentException('Valid email is required');
+        }
+
+        $stmt = $this->db->prepare("
+            UPDATE users
+            SET name = ?, email = ?
+            WHERE id = ?
+        ");
+        $stmt->execute([$safeName, $safeEmail, $userId]);
+
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE id = ?");
+        $stmt->execute([$userId]);
+        $user = $this->normalizeUser($stmt->fetch());
+
+        if (!$user) {
+            throw new \RuntimeException('User not found');
+        }
 
         $this->storeUserInSession($user);
 
@@ -168,11 +321,18 @@ class Auth
         $stmt = $this->db->prepare("SELECT * FROM users WHERE id = ?");
         $stmt->execute([$userId]);
         $user = $stmt->fetch();
-        return $user ?: null;
+        return $this->normalizeUser($user);
     }
 
     public function logout(): void
     {
+        $userId = $this->getSessionUserId();
+        if ($userId) {
+            $stmt = $this->db->prepare("DELETE FROM remember_me_tokens WHERE user_id = ?");
+            $stmt->execute([$userId]);
+        }
+
+        $this->clearRememberMeCookie();
         $_SESSION = [];
         session_destroy();
     }
@@ -194,14 +354,17 @@ class Auth
 
     private function storeUserInSession(array $user): void
     {
+        $normalizedUser = $this->normalizeUser($user);
+
         $_SESSION['user'] = [
-            'id' => $user['id'],
-            'google_id' => $user['google_id'],
-            'email' => $user['email'],
-            'name' => $user['name'],
-            'google_avatar' => $user['google_avatar'],
-            'profile_picture' => $user['profile_picture'],
-            'is_profile_setup' => $user['is_profile_setup']
+            'id' => $normalizedUser['id'],
+            'google_id' => $normalizedUser['google_id'],
+            'email' => $normalizedUser['email'] ?? $normalizedUser['gmail'] ?? null,
+            'gmail' => $normalizedUser['gmail'] ?? $normalizedUser['email'] ?? null,
+            'name' => $normalizedUser['name'],
+            'google_avatar' => $normalizedUser['google_avatar'],
+            'profile_picture' => $normalizedUser['profile_picture'],
+            'is_profile_setup' => $normalizedUser['is_profile_setup']
         ];
         $_SESSION['logged_in'] = true;
     }

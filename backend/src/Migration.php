@@ -16,10 +16,29 @@ class Migration
     public function run(): void
     {
         $this->createUsersTable();
+        $this->createRememberMeTokensTable();
         $this->createWorkingHoursTable();
         $this->createEventsTable();
         $this->createTasksTable();
         $this->createRemindersTable();
+    }
+
+    private function createRememberMeTokensTable(): void
+    {
+        $this->db->exec("
+            CREATE TABLE IF NOT EXISTS remember_me_tokens (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                token_hash CHAR(64) NOT NULL,
+                expires_at DATETIME NOT NULL,
+                last_used_at TIMESTAMP NULL DEFAULT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+                UNIQUE KEY unique_user (user_id),
+                UNIQUE KEY unique_token_hash (token_hash)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        ");
     }
 
     private function createUsersTable(): void

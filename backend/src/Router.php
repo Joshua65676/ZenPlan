@@ -21,6 +21,10 @@ class Router
 
     public function handle(): void
     {
+        if (!$this->auth->isLoggedIn()) {
+            $this->auth->handleRememberMeLogin();
+        }
+
         $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $method = $_SERVER['REQUEST_METHOD'];
 
@@ -73,6 +77,10 @@ class Router
 
             case '/auth/setup-profile':
                 $this->setupProfile();
+                break;
+
+            case '/auth/profile':
+                $this->updateProfile();
                 break;
 
             case '/auth/me':
@@ -452,7 +460,8 @@ class Router
 
     private function googleLogin(): void
     {
-        $url = $this->auth->getGoogleAuthUrl();
+        $rememberMe = filter_var($_GET['remember'] ?? false, FILTER_VALIDATE_BOOLEAN);
+        $url = $this->auth->getGoogleAuthUrl($rememberMe);
         echo json_encode(['url' => $url]);
     }
 
@@ -571,6 +580,29 @@ class Router
         session_write_close();
 
         echo json_encode(['success' => true, 'user' => $updatedUser]);
+    }
+
+    private function updateProfile(): void
+    {
+        $data = json_decode(file_get_contents('php://input'), true) ?? [];
+        $name = trim((string)($data['name'] ?? ''));
+        $email = trim((string)($data['email'] ?? ''));
+
+        if (!$this->auth->isLoggedIn()) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Unauthorized']);
+            return;
+        }
+
+        try {
+            $userId = $this->auth->getSessionUserId();
+            $updatedUser = $this->auth->updateProfile($userId, $name, $email);
+            session_write_close();
+            echo json_encode(['success' => true, 'user' => $updatedUser]);
+        } catch (\InvalidArgumentException | \RuntimeException $e) {
+            http_response_code(400);
+            echo json_encode(['error' => $e->getMessage()]);
+        }
     }
 
     private function getCurrentUser(): void

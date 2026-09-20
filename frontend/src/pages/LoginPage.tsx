@@ -4,11 +4,14 @@ import { motion } from "framer-motion";
 
 const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const handleGoogleLogin = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:8080/auth/google");
+      const response = await fetch(
+        `http://localhost:8080/auth/google?remember=${rememberMe ? 1 : 0}`,
+      );
       const data = await response.json();
       window.location.href = data.url;
     } catch (error) {
@@ -56,7 +59,18 @@ const LoginPage: React.FC = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
+            className="flex flex-col items-center gap-3"
           >
+            <label className="flex items-center gap-2 text-[12px] font-outfit text-Grey">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="h-4 w-4 accent-PurpleNormal"
+              />
+              Remember me
+            </label>
+
             <button
               onClick={handleGoogleLogin}
               disabled={loading}
@@ -67,9 +81,7 @@ const LoginPage: React.FC = () => {
               ) : (
                 <>
                   <img src={GoogleIcon} alt="Google Icon" className="" />
-                  <span className="">
-                    Continue with Google
-                  </span>
+                  <span className="">Continue with Google</span>
                 </>
               )}
             </button>

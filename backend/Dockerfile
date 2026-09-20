@@ -20,8 +20,11 @@ RUN a2enmod rewrite
 # Create persistent session directory with proper permissions
 RUN mkdir -p /var/lib/php/sessions && chmod 1777 /var/lib/php/sessions
 
-# Configure PHP session storage to use persistent directory
-RUN echo "session.save_path = '/var/lib/php/sessions'" >> /usr/local/etc/php/conf.d/sessions.ini
+# Configure PHP session storage to use persistent directory and keep the active session short
+RUN echo "session.save_path = '/var/lib/php/sessions'" >> /usr/local/etc/php/conf.d/sessions.ini \
+    && echo "session.cookie_lifetime = 86400" >> /usr/local/etc/php/conf.d/sessions.ini \
+    && echo "session.gc_maxlifetime = 86400" >> /usr/local/etc/php/conf.d/sessions.ini \
+    && echo "session.cookie_httponly = 1" >> /usr/local/etc/php/conf.d/sessions.ini
 
 WORKDIR /var/www/html
 
