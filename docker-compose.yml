@@ -22,13 +22,18 @@ services:
       - "8080:80"
     env_file:
       - .env
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST:-db}
+      MYSQL_PORT: ${MYSQL_PORT:-3306}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-zenplan}
+      MYSQL_USER: ${MYSQL_USER:-user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
+      MYSQL_SSL_CA: ${MYSQL_SSL_CA:-/certs/ca.pem}
     volumes:
       - ./backend:/var/www/html
       - uploads_data:/var/www/html/uploads
       - sessions_data:/var/lib/php/sessions
-    depends_on:
-      db:
-        condition: service_healthy
+      - ./backend/certs/ca.pem:/certs/ca.pem:ro
     restart: unless-stopped
 
   db:

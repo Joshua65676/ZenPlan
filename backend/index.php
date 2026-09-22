@@ -1,8 +1,11 @@
 <?php
 
-// Session cookie settings for cross-origin
-ini_set('session.cookie_samesite', 'Lax');
-ini_set('session.cookie_secure', '0');
+$frontendUrl = getenv('FRONTEND_URL') ?: '';
+$isRenderHttps = getenv('RENDER') !== false || (strpos($frontendUrl, 'https://') === 0);
+
+// Session cookie settings for cross-origin and Render HTTPS deployments.
+ini_set('session.cookie_samesite', $isRenderHttps ? 'None' : 'Lax');
+ini_set('session.cookie_secure', $isRenderHttps ? '1' : '0');
 ini_set('session.cookie_httponly', '1');
 ini_set('session.cookie_domain', '');
 session_start();

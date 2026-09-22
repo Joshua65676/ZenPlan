@@ -32,7 +32,11 @@ COPY composer.json composer.lock ./
 RUN composer install --no-scripts --no-autoloader --no-dev
 
 COPY . /var/www/html
+COPY certs /certs
+COPY render-entrypoint.sh /usr/local/bin/render-entrypoint.sh
+RUN chmod +x /usr/local/bin/render-entrypoint.sh
 
 RUN composer dump-autoload --optimize
 
 EXPOSE 80
+CMD ["/usr/local/bin/render-entrypoint.sh"]
