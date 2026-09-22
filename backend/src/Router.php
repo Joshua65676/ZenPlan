@@ -28,8 +28,10 @@ class Router
         $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $method = $_SERVER['REQUEST_METHOD'];
 
+        $frontendUrl = getenv('FRONTEND_URL') ?: 'http://localhost:5173';
+
         // CORS Headers
-        header("Access-Control-Allow-Origin: " . getenv('FRONTEND_URL'));
+        header("Access-Control-Allow-Origin: " . $frontendUrl);
         header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
         header("Access-Control-Allow-Headers: Content-Type, Authorization");
         header("Access-Control-Allow-Credentials: true");
@@ -532,7 +534,7 @@ class Router
 
         session_write_close();
 
-        $frontendUrl = getenv('FRONTEND_URL');
+        $frontendUrl = getenv('FRONTEND_URL') ?: 'http://localhost:5173';
 
         if (!$user['is_profile_setup']) {
             header("Location: $frontendUrl/setup-profile");

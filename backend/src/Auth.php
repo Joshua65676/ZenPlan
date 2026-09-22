@@ -19,10 +19,14 @@ class Auth
 
     private function setupGoogleClient(): void
     {
+        $clientId = getenv('GOOGLE_CLIENT_ID') ?: '';
+        $clientSecret = getenv('GOOGLE_CLIENT_SECRET') ?: '';
+        $redirectUri = getenv('GOOGLE_REDIRECT_URI') ?: 'https://zenplan.onrender.com/auth/google/callback';
+
         $this->client = new Client();
-        $this->client->setClientId(getenv('GOOGLE_CLIENT_ID'));
-        $this->client->setClientSecret(getenv('GOOGLE_CLIENT_SECRET'));
-        $this->client->setRedirectUri(getenv('GOOGLE_REDIRECT_URI'));
+        $this->client->setClientId($clientId);
+        $this->client->setClientSecret($clientSecret);
+        $this->client->setRedirectUri($redirectUri);
 
         $this->client->addScope('openid');
         $this->client->addScope('https://www.googleapis.com/auth/userinfo.email');
