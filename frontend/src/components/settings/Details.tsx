@@ -37,7 +37,7 @@ const Details: React.FC = () => {
 
       try {
         const response = await fetch(
-          "http://localhost:8080/auth/setup-profile",
+          "https://zenplan.onrender.com/auth/setup-profile",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

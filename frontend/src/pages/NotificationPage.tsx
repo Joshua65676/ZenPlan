@@ -28,7 +28,7 @@ const NotificationsPage: React.FC = () => {
       }
 
       try {
-        const response = await fetch("http://localhost:8080/auth/me", {
+        const response = await fetch("https://zenplan.onrender.com/auth/me", {
           method: "GET",
           credentials: "include",
           headers: { "Content-Type": "application/json" },

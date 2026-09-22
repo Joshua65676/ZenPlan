@@ -36,7 +36,7 @@ type TaskPayload = {
   tags: string[];
 };
 
-const API = "http://localhost:8080";
+const API = "https://zenplan.onrender.com";
 
 const getToken = (): string | null => {
   const savedToken = loadAuthToken();

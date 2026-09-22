@@ -67,6 +67,14 @@ class Router
         }
 
         switch ($path) {
+            case '/':
+                http_response_code(200);
+                echo json_encode([
+                    'status' => 'ok',
+                    'message' => 'ZenPlan backend is running',
+                ]);
+                break;
+
             case '/auth/google':
                 $this->googleLogin();
                 break;

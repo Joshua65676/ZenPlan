@@ -39,7 +39,7 @@ const WorkingHoursPage = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const url = `http://localhost:8080/settings/working-hours${token ? `?token=${token}` : ""}`;
+        const url = `https://zenplan.onrender.com/settings/working-hours${token ? `?token=${token}` : ""}`;
         const response = await fetch(url, { credentials: "include" });
 
         if (!response.ok) {
@@ -94,7 +94,7 @@ const WorkingHoursPage = () => {
       }
 
       const response = await fetch(
-        "http://localhost:8080/settings/working-hours",
+        "https://zenplan.onrender.com/settings/working-hours",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

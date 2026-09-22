@@ -4,6 +4,7 @@ import { AuthContext } from "./AuthContext";
 import type { User } from "./AuthContext";
 
 const USER_STORAGE_KEY = "zenplan_user";
+const API = "https://zenplan.onrender.com";
 
 const loadStoredUser = (): User | null => {
   if (typeof window === "undefined") {
@@ -47,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const restoreUser = async () => {
       try {
-        const response = await fetch("http://localhost:8080/auth/me", {
+        const response = await fetch(`${API}/auth/me`, {
           method: "GET",
           credentials: "include",
           headers: { "Content-Type": "application/json" },

@@ -11,7 +11,7 @@ const Logout: React.FC = () => {
     setLoading(true);
 
     try {
-      await fetch("http://localhost:8080/auth/logout", {
+      await fetch("https://zenplan.onrender.com/auth/logout", {
         method: "POST",
         credentials: "include",
         headers: {

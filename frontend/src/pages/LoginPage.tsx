@@ -10,7 +10,7 @@ const LoginPage: React.FC = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:8080/auth/google?remember=${rememberMe ? 1 : 0}`,
+        `https://zenplan.onrender.com/auth/google?remember=${rememberMe ? 1 : 0}`,
       );
       const data = await response.json();
       window.location.href = data.url;

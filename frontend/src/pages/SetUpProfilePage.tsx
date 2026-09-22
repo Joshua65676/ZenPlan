@@ -19,7 +19,7 @@ const SetupProfilePage = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch("http://localhost:8080/auth/me", {
+        const response = await fetch("https://zenplan.onrender.com/auth/me", {
           method: "GET",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
@@ -66,7 +66,7 @@ const SetupProfilePage = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:8080/auth/setup-profile", {
+      const response = await fetch("https://zenplan.onrender.com/auth/setup-profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

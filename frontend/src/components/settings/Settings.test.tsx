@@ -62,7 +62,7 @@ describe("Settings", () => {
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith(
-        "http://localhost:8080/auth/profile",
+        "https://zenplan.onrender.com/auth/profile",
         expect.objectContaining({
           method: "POST",
           credentials: "include",

@@ -18,7 +18,7 @@ const Settings: React.FC = () => {
     setSaving(true);
 
     try {
-      const response = await fetch("http://localhost:8080/auth/profile", {
+      const response = await fetch("https://zenplan.onrender.com/auth/profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
