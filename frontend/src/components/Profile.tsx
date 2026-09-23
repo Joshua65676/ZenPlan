@@ -2,6 +2,19 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
+const API_BASE_URL = "https://zenplan.onrender.com";
+
+const resolveAvatarUrl = (value?: string | null) => {
+  if (!value) return undefined;
+  if (value.startsWith("data:") || /^https?:\/\//i.test(value)) {
+    return value;
+  }
+  if (value.startsWith("/")) {
+    return `${API_BASE_URL}${value}`;
+  }
+  return value;
+};
+
 const Profile: React.FC = () => {
   const { username: routeUsername } = useParams<{ username: string }>();
   const { user } = useAuth();
@@ -9,7 +22,9 @@ const Profile: React.FC = () => {
     user?.name ??
     (routeUsername ? decodeURIComponent(routeUsername) : "Dashboard");
 
-  const avatarUrl = user?.profile_picture ?? user?.google_avatar ?? undefined;
+  const avatarUrl = resolveAvatarUrl(
+    user?.profile_picture ?? user?.google_avatar ?? undefined,
+  );
   const initials = displayName
     ? displayName
         .split(" ")
@@ -24,7 +39,7 @@ const Profile: React.FC = () => {
       <div className="w-62 border-[0.5px] text-white"></div>
 
       <div className="flex flex-row items-center justify-center gap-3">
-        <button>
+        <button type="button" className="overflow-hidden rounded-xl">
           {avatarUrl ? (
             <img
               src={avatarUrl}
@@ -32,7 +47,9 @@ const Profile: React.FC = () => {
               className="h-10 w-10 rounded-xl object-cover"
             />
           ) : (
-            <span>{initials}</span>
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-LightPurple text-xs font-bold text-white">
+              {initials}
+            </span>
           )}
         </button>
         <h2 className="font-outfit font-bold text-[14px] text-white leading-[130%] tracking-normal">

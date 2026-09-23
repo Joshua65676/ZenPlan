@@ -2,6 +2,19 @@ import React, { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
+const API_BASE_URL = "https://zenplan.onrender.com";
+
+const resolveAvatarUrl = (value?: string | null) => {
+  if (!value) return undefined;
+  if (value.startsWith("data:") || /^https?:\/\//i.test(value)) {
+    return value;
+  }
+  if (value.startsWith("/")) {
+    return `${API_BASE_URL}${value}`;
+  }
+  return value;
+};
+
 const Details: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { username: routeUsername } = useParams<{ username: string }>();
@@ -13,8 +26,9 @@ const Details: React.FC = () => {
     (routeUsername ? decodeURIComponent(routeUsername) : "Dashboard");
   const userEmail = user?.email ?? "";
 
-  const avatarUrl =
-    uploadPreview ?? user?.profile_picture ?? user?.google_avatar ?? undefined;
+  const avatarUrl = resolveAvatarUrl(
+    uploadPreview ?? user?.profile_picture ?? user?.google_avatar ?? undefined,
+  );
   const initials = displayName
     ? displayName
         .split(" ")
@@ -117,7 +131,7 @@ const Details: React.FC = () => {
       </main>
 
       <>
-       <div className="border-[0.5px] text-BorderColor"></div>
+        <div className="border-[0.5px] text-BorderColor"></div>
       </>
     </section>
   );
