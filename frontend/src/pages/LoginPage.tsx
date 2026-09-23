@@ -12,10 +12,25 @@ const LoginPage: React.FC = () => {
       const response = await fetch(
         `https://zenplan.onrender.com/auth/google?remember=${rememberMe ? 1 : 0}`,
       );
+
+      if (!response.ok) {
+        throw new Error(`Google login failed: ${response.status}`);
+      }
+
       const data = await response.json();
+      if (!data?.url) {
+        throw new Error("Google auth URL was not returned by the backend");
+      }
+
       window.location.href = data.url;
     } catch (error) {
       console.error(error);
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Could not start Google login. Please check the backend.",
+      );
+    } finally {
       setLoading(false);
     }
   };

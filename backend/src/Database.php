@@ -17,18 +17,21 @@ class Database
         $dbname = getenv('MYSQL_DATABASE') ?: 'zenplan';
         $user = getenv('MYSQL_USER') ?: 'user';
         $password = getenv('MYSQL_PASSWORD') ?: 'password';
-        $sslCa = getenv('MYSQL_SSL_CA') ?: null;
 
         $maxRetries = 10;
         $retryDelay = 3;
         $useLocalBootstrap = in_array($host, ['db', 'localhost', '127.0.0.1'], true);
+
+        $sslCa = getenv('MYSQL_SSL_CA');
+        $sslCa = $sslCa !== false ? trim($sslCa) : null;
+        $sslCa = $sslCa !== '' ? $sslCa : null;
 
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ];
 
-        if ($sslCa && file_exists($sslCa)) {
+        if ($sslCa && file_exists($sslCa) && !$useLocalBootstrap) {
             $options[PDO::MYSQL_ATTR_SSL_CA] = $sslCa;
             $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = true;
         }
