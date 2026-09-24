@@ -39,3 +39,10 @@ export const ReminderList = [
   {id: 2, name: 'Active', size: "79px"},
   {id: 3, name: 'Inactive', size: "86px"}
 ]
+
+export const NavbarList = [ 
+  {list: 'How it works', id: "how-it-works"},
+  {list: 'Features', id: "features"},
+  {list: 'Testimonial', id: "testimonial"},
+  {list: 'FAQ', id: "faq"},
+]

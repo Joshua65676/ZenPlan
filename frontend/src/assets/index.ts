@@ -24,6 +24,11 @@ import TasksIcon from "./Task-Icon.svg"
 import AddWhite from "./Add_White.svg"
 import NotFoundIcon from "./not_found_icon.svg"
 import RepeatPIcon from "./repeat_Icon.svg"
+import Arrow from "./ArrowIcon.svg"
+import CalendarHero from "./CalendarHero.svg"
+import People from "./People.svg"
+import Stars from "./stars.svg"
+import CreateTaskImage from "./Create_task.svg"
 
 export {
     LoginImage,
@@ -51,5 +56,10 @@ export {
     TasksIcon,
     AddWhite,
     NotFoundIcon,
-    RepeatPIcon
+    RepeatPIcon,
+    Arrow,
+    CalendarHero,
+    People,
+    Stars,
+    CreateTaskImage
 }
