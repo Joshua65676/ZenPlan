@@ -29,6 +29,15 @@ import CalendarHero from "./CalendarHero.svg"
 import People from "./People.svg"
 import Stars from "./stars.svg"
 import CreateTaskImage from "./Create_task.svg"
+import FIcon1 from "./FIcon1.svg"
+import FIcon2 from "./FIcon2.svg"
+import FIcon3 from "./FIcon3.svg"
+import FIcon4 from "./FIcon4.svg"
+import FIcon5 from "./FIcon5.svg"
+import FIcon6 from "./FIcon6.svg"
+import TestIcon from "./TestIcon.svg"
+import Ratings from "./Ratings.svg"
+import Avatar from "./Avatar.svg"
 
 export {
     LoginImage,
@@ -61,5 +70,14 @@ export {
     CalendarHero,
     People,
     Stars,
-    CreateTaskImage
+    CreateTaskImage,
+    FIcon1,
+    FIcon2,
+    FIcon3,
+    FIcon4,
+    FIcon5,
+    FIcon6,
+    TestIcon,
+    Ratings,
+    Avatar
 }

@@ -1,9 +1,10 @@
 import React from "react";
 import { Arrow, CalendarHero, People, Stars } from "../../assets";
+import { Link } from "react-router-dom";
 
 const Hero: React.FC = () => {
   return (
-    <section className="md:max-w-370 md:mt-3 md:mb-3 md:rounded-[20px] mx-auto h-screen w-full bg-linear-to-bl from-white to-HeroBg/65">
+    <section className="md:max-w-370 md:mt-3 md:mb-3 md:rounded-[20px] mx-auto md:h-screen w-full bg-linear-to-bl from-white to-HeroBg/65">
       <main className="container mx-auto max-w-7xl w-full px-4 md:py-30 py-40">
         <div className="flex flex-col text-start gap-5">
           <div className="flex flex-col text-start gap-2">
@@ -17,10 +18,12 @@ const Hero: React.FC = () => {
           </div>
           {/* buttons */}
           <div className="flex flex-row gap-5">
-            <button className="w-30.75 h-9.5 rounded-xl px-4 py-2.5 bg-LightPurple font-outfit font-[400px] text-[14px] leading-[130%] tracking-[0%] text-white">
+            <Link to="/signup">
+            <button className="w-30.75 h-9.5 cursor-pointer rounded-xl px-4 py-2.5 bg-LightPurple font-outfit font-[400px] text-[14px] leading-[130%] tracking-[0%] text-white">
               Get started
             </button>
-            <button className="w-32 h-9.5 border rounded-xl px-4 py-2.5 border-black flex flex-row gap-2 font-outfit font-[400px] text-[14px] leading-[130%] tracking-[0%] text-black">
+            </Link>
+            <button className="w-32 h-9.5 border rounded-xl cursor-pointer px-4 py-2.5 border-black flex flex-row gap-2 font-outfit font-[400px] text-[14px] leading-[130%] tracking-[0%] text-black">
               Get started
               <img src={Arrow} alt="" />
             </button>

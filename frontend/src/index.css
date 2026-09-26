@@ -22,5 +22,6 @@
   --color-ReminderBg: rgba(215, 208, 235, 1);
   --color-HeroBg: rgba(103, 80, 164, 1);
   --color-BgWhite: rgba(243, 241, 249, 1);
-  --color-Brown: rgba(152, 105, 119, 1)
+  --color-Brown: rgba(152, 105, 119, 1);
+  --color-CardBorder: rgba(233, 239, 245, 1)
 }
