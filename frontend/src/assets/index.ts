@@ -38,6 +38,12 @@ import FIcon6 from "./FIcon6.svg"
 import TestIcon from "./TestIcon.svg"
 import Ratings from "./Ratings.svg"
 import Avatar from "./Avatar.svg"
+import CrossIcon from "./CrossIcon.svg"
+import BotImage from "./BotImage.svg"
+import Facebook from "./facebook.svg"
+import Instagram from "./instagram.svg"
+import Linkedin from "./linkedin.svg"
+import Reddit from "./reddit.svg"
 
 export {
     LoginImage,
@@ -79,5 +85,11 @@ export {
     FIcon6,
     TestIcon,
     Ratings,
-    Avatar
+    Avatar,
+    CrossIcon,
+    BotImage,
+    Facebook,
+    Instagram,
+    Linkedin,
+    Reddit
 }

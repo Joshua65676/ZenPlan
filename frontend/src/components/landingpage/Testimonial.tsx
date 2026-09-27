@@ -5,7 +5,7 @@ import { TestimonialList } from "../../constants";
 
 const Testimonial: React.FC = () => {
   return (
-    <section id="testimonial" className="bg-linear-to-bl from-white to-Grey/40">
+    <section id="testimonial" className="bg-linear-to-bl from-white to-Grey/25">
       <main className="container mx-auto max-w-7xl w-full py-10 flex flex-col gap-20 items-center">
         <main className="flex flex-col gap-10 items-center">
           <div className="flex flex-col items-center text-center gap-3">

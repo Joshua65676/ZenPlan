@@ -1,4 +1,4 @@
-import { CalendarIcon, FIcon1, FIcon2, FIcon3, FIcon4, FIcon5, FIcon6, LogoutIcon, RemindIcon, SettingIcon, TaskIcon, TestIcon, Ratings, Avatar } from "../assets"
+import { CalendarIcon, FIcon1, FIcon2, FIcon3, FIcon4, FIcon5, FIcon6, LogoutIcon, RemindIcon, SettingIcon, TaskIcon, TestIcon, Ratings, Avatar, CrossIcon, Linkedin, Reddit, Instagram, Facebook } from "../assets"
 
 export const DAYS = [
     'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
@@ -61,4 +61,48 @@ export const TestimonialList = [
   {id: 2, icon: TestIcon, rating: Ratings, description: "ZenPlan helps me stay on top of projects and deadlines. The interface feels so peaceful like planning in a clear space, not chaos.", avatar: Avatar, name: "Mirana Marci", title: "3D Designer"},
   {id: 3, icon: TestIcon, rating: Ratings, description: "It’s more than just a planner ZenPlan makes me feel in control and calm at the same time. It’s the balance I didn’t know I needed", avatar: Avatar, name: "Dazzle Healer", title: "Front End Developer"},
   {id: 4, icon: TestIcon, rating: Ratings, description: "The attention to detail is amazing. Every interaction feels intentional, and it really helps me focus on what matters most each day.", avatar: Avatar, name: "Crystal Maiden", title: "UIUX Designer"}
+]
+
+export const FAQList = [
+  {id: 1, question: "Is my data safe?", answer: "Definitely. Your data is encrypted and securely stored. We never share or sell your information.", icon: CrossIcon},
+  {id: 2, question: "Is my data safe?", answer: "Definitely. Your data is encrypted and securely stored. We never share or sell your information.", icon: CrossIcon},
+  {id: 3, question: "Is my data safe?", answer: "Definitely. Your data is encrypted and securely stored. We never share or sell your information.", icon: CrossIcon},
+  {id: 4, question: "Is my data safe?", answer: "Definitely. Your data is encrypted and securely stored. We never share or sell your information.", icon: CrossIcon},
+  {id: 5, question: "Is my data safe?", answer: "Definitely. Your data is encrypted and securely stored. We never share or sell your information.", icon: CrossIcon},
+  {id: 6, question: "Is my data safe?", answer: "Definitely. Your data is encrypted and securely stored. We never share or sell your information.", icon: CrossIcon}
+]
+
+export const FooterList = [
+  {
+    title: "Features",
+    links: [
+      { label : "How it works", href: "#"},
+      { label : "Pricing", href: "#"},
+      { label : "For Teams", href: "#"}
+    ],
+  },
+  {
+    title: "About",
+    links: [
+      { label : "About us", href: "#"},
+      { label : "Blog", href: "#"},
+      { label : "Media", href: "#"}
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { label : "Terms", href: "#"},
+      { label : "Privacy", href: "#"},
+      { label : "License", href: "#"},
+      { label : "Security", href: "#"}
+    ]
+  },
+]
+
+export const Socials = [
+     {icon : Linkedin, href: "#"},
+     { icon : Reddit, href: "#"},
+     { icon : Instagram, href: "#"},
+     { icon : Facebook, href: "#"}
 ]
