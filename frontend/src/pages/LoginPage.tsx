@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { GoogleIcon, LoginImage, Logo } from "../assets";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "../config";
 
 const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -10,7 +11,7 @@ const LoginPage: React.FC = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `https://zenplan.onrender.com/auth/google?remember=${rememberMe ? 1 : 0}`,
+        `${API_BASE_URL}/auth/google?remember=${rememberMe ? 1 : 0}`,
       );
 
       if (!response.ok) {

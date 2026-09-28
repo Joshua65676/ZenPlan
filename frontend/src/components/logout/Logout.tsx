@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../config";
 import { useAuth } from "../../hooks/useAuth";
 
 const Logout: React.FC = () => {
@@ -11,7 +12,7 @@ const Logout: React.FC = () => {
     setLoading(true);
 
     try {
-      await fetch("https://zenplan.onrender.com/auth/logout", {
+      await fetch(`${API_BASE_URL}/auth/logout`, {
         method: "POST",
         credentials: "include",
         headers: {

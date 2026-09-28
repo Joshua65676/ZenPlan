@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "../../config";
 import { DAYS, TIMEZONES } from "../../constants";
 import { Clock, TimeZone } from "../../assets";
 import { resolveToken, storeAuthToken } from "../../utils/auth";
@@ -55,7 +56,7 @@ const Availability = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const url = `https://zenplan.onrender.com/settings/working-hours${token ? `?token=${token}` : ""}`;
+        const url = `${API_BASE_URL}/settings/working-hours${token ? `?token=${token}` : ""}`;
         const response = await fetch(url, { credentials: "include" });
 
         if (!response.ok) {
@@ -109,15 +110,12 @@ const Availability = () => {
         body.token = token;
       }
 
-      const response = await fetch(
-        "https://zenplan.onrender.com/settings/working-hours",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(body),
-        },
-      );
+      const response = await fetch(`${API_BASE_URL}/settings/working-hours`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(body),
+      });
 
       const data = await response.json();
 

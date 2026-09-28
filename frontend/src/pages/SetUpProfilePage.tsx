@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "../config";
 import { useAuth } from "../hooks/useAuth";
 import { Logo } from "../assets";
 
@@ -19,7 +20,7 @@ const SetupProfilePage = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch("https://zenplan.onrender.com/auth/me", {
+        const response = await fetch(`${API_BASE_URL}/auth/me`, {
           method: "GET",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
@@ -66,7 +67,7 @@ const SetupProfilePage = () => {
     setError("");
 
     try {
-      const response = await fetch("https://zenplan.onrender.com/auth/setup-profile", {
+      const response = await fetch(`${API_BASE_URL}/auth/setup-profile`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

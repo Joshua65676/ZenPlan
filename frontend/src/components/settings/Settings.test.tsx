@@ -3,6 +3,7 @@
 import "@testing-library/jest-dom/vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { API_BASE_URL } from "../../config";
 import Settings from "./Settings";
 
 const mockSetUser = vi.fn();
@@ -62,7 +63,7 @@ describe("Settings", () => {
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith(
-        "https://zenplan.onrender.com/auth/profile",
+        `${API_BASE_URL}/auth/profile`,
         expect.objectContaining({
           method: "POST",
           credentials: "include",

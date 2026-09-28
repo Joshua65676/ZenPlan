@@ -1,8 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import { API_BASE_URL } from "../config";
 import { useAuth } from "../hooks/useAuth";
-
-const API_BASE_URL = "https://zenplan.onrender.com";
 
 const resolveAvatarUrl = (value?: string | null) => {
   if (!value) return undefined;

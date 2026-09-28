@@ -1,8 +1,9 @@
 import { useState, useCallback } from "react";
+import { API_BASE_URL } from "../config";
 import { loadAuthToken, resolveToken, storeAuthToken } from "../utils/auth";
 import type { Event } from "../types/event";
 
-const API = "https://zenplan.onrender.com";
+const API = API_BASE_URL;
 
 const getToken = (): string | null => {
   const savedToken = loadAuthToken();

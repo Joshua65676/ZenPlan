@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "../config";
 import { Icon, Logo, NotificationImg } from "../assets";
 import { useAuth } from "../hooks/useAuth";
 import { resolveToken, storeAuthToken } from "../utils/auth";
@@ -28,7 +29,7 @@ const NotificationsPage: React.FC = () => {
       }
 
       try {
-        const response = await fetch("https://zenplan.onrender.com/auth/me", {
+        const response = await fetch(`${API_BASE_URL}/auth/me`, {
           method: "GET",
           credentials: "include",
           headers: { "Content-Type": "application/json" },

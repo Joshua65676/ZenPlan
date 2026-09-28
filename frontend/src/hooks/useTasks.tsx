@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { API_BASE_URL } from "../config";
 import { loadAuthToken, resolveToken, storeAuthToken } from "../utils/auth";
 
 type Task = {
@@ -36,7 +37,7 @@ type TaskPayload = {
   tags: string[];
 };
 
-const API = "https://zenplan.onrender.com";
+const API = API_BASE_URL;
 
 const getToken = (): string | null => {
   const savedToken = loadAuthToken();

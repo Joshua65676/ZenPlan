@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { AuthContext } from "./AuthContext";
 import type { User } from "./AuthContext";
+import { API_BASE_URL } from "../config";
 
 const USER_STORAGE_KEY = "zenplan_user";
-const API = "https://zenplan.onrender.com";
+const API = API_BASE_URL;
 
 const loadStoredUser = (): User | null => {
   if (typeof window === "undefined") {

@@ -1,8 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import { API_BASE_URL } from "../../config";
 import { useAuth } from "../../hooks/useAuth";
-
-const API_BASE_URL = "https://zenplan.onrender.com";
 
 const resolveAvatarUrl = (value?: string | null) => {
   if (!value) return undefined;
@@ -50,15 +49,12 @@ const Details: React.FC = () => {
       setUploadPreview(base64);
 
       try {
-        const response = await fetch(
-          "https://zenplan.onrender.com/auth/setup-profile",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify({ profilePicture: base64 }),
-          },
-        );
+        const response = await fetch(`${API_BASE_URL}/auth/setup-profile`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ profilePicture: base64 }),
+        });
 
         const data = await response.json();
         if (!response.ok || data.error) {

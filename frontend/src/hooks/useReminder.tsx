@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { API_BASE_URL } from "../config";
 import { loadAuthToken, resolveToken, storeAuthToken } from "../utils/auth";
 
 export type ReminderCategory = "One-time only" | "Daily" | "Weekly" | "Monthly";
@@ -25,7 +26,7 @@ export type ReminderPayload = {
   is_active: boolean;
 };
 
-const API = "https://zenplan.onrender.com";
+const API = API_BASE_URL;
 
 const getToken = (): string | null => {
   const savedToken = loadAuthToken();

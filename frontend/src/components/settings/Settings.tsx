@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Details from "./Details";
 import SettingsForm from "./form";
 import NotificationSettings from "./Notification";
+import { API_BASE_URL } from "../../config";
 import { useAuth } from "../../hooks/useAuth";
 
 const Settings: React.FC = () => {
@@ -18,7 +19,7 @@ const Settings: React.FC = () => {
     setSaving(true);
 
     try {
-      const response = await fetch("https://zenplan.onrender.com/auth/profile", {
+      const response = await fetch(`${API_BASE_URL}/auth/profile`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
