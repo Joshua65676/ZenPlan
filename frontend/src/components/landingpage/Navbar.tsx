@@ -52,7 +52,7 @@ const Navbar: React.FC = () => {
             </ul>
 
             <Link
-              to="/login"
+              to="/signup"
               className="flex items-center justify-center rounded-xl border border-black bg-white px-4 py-2.5 font-outfit text-[14px] leading-[130%] tracking-normal text-black transition-all duration-200 hover:bg-Purple hover:text-white hover:border-Purple"
             >
               Sign up now
@@ -129,7 +129,7 @@ const Navbar: React.FC = () => {
 
         <div className="mt-8 border-t border-BorderColor pt-5">
           <Link
-            to="/login"
+            to="/signup"
             onClick={closeMobileMenu}
             className="flex items-center justify-center rounded-xl border border-black bg-black px-4 py-3 font-outfit text-[14px] leading-[130%] tracking-normal text-white transition-all duration-200 hover:bg-Purple hover:border-Purple"
           >
