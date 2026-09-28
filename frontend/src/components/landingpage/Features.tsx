@@ -36,7 +36,7 @@ const Features: React.FC = () => {
         }}
       />
 
-      <main className="relative container mx-auto max-w-7xl w-full flex flex-col md:gap-5 gap-10 py-3">
+      <main className="relative container mx-auto max-w-7xl w-full flex flex-col md:gap-5 gap-10 py-3 px-8">
         <div className="flex flex-col items-center text-center gap-3">
           <h2 className="font-outfit font-[400px] text-[20px] leading-[130%] tracking-normal text-center text-PurpleNormal">
             Features
@@ -46,7 +46,7 @@ const Features: React.FC = () => {
           </p>
         </div>
 
-        <ul className="grid md:grid-cols-3 grid-cols-1 gap-4 justify-items-center">
+        <ul className="grid md:grid-cols-3 grid-cols-1 gap-5 md:gap-8 justify-items-center">
           {FeaturesList.map((feature) => (
             <li key={feature.id}>
               <div className="flex flex-col items-start text-start gap-3 p-10 border-[1.17px] border-BorderColor rounded-[20px] w-95.75 h-75 bg-white">

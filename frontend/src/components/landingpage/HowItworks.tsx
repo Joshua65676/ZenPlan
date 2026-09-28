@@ -3,8 +3,8 @@ import { CreateTaskImage } from "../../assets";
 
 const HowItworks: React.FC = () => {
   return (
-    <section id="how-it-works" className="bg-BgWhite py-15 max-w-full scroll-mt-20">
-      <main className="container mx-auto max-w-7xl w-full flex flex-col md:gap-5 gap-10">
+    <section id="how-it-works" className="bg-BgWhite py-15 px-8 max-w-full scroll-mt-20">
+      <main className="container mx-auto max-w-7xl w-full px-8 flex flex-col md:gap-5 gap-10">
         <div className="flex flex-col items-center text-center gap-3">
             <h2 className="font-outfit font-[400px] text-[20px] leading-[130%] tracking-normal text-center text-PurpleNormal">How it works</h2>
             <p className="font-outfit font-medium md:w-157 md:text-[32px] leading-[130%] tracking-[0%] text-center text-black">Intuitive design that makes productivity feel natural and easy</p>

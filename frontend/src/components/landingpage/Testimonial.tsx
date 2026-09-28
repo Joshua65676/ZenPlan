@@ -6,7 +6,7 @@ import { TestimonialList } from "../../constants";
 const Testimonial: React.FC = () => {
   return (
     <section id="testimonial" className="bg-linear-to-bl from-white to-Grey/25">
-      <main className="container mx-auto max-w-7xl w-full py-10 flex flex-col gap-20 items-center">
+      <main className="container mx-auto max-w-7xl w-full px-4 py-10 flex flex-col gap-20 items-center">
         <main className="flex flex-col gap-10 items-center">
           <div className="flex flex-col items-center text-center gap-3">
             <h2 className="font-outfit font-medium text-[20px] text-center leading-[130%] tracking-normal text-PurpleNormal">
@@ -18,10 +18,10 @@ const Testimonial: React.FC = () => {
           </div>
 
           {/* MAP */}
-          <ul className="grid md:grid-cols-2 grid-cols-1 gap-5 justify-items-center">
+          <ul className="grid md:grid-cols-2 grid-cols-1 md:gap-10 gap-8 justify-items-center">
             {TestimonialList.map((testimonial) => (
               <li key={testimonial.id}>
-                <div className="md:w-[574.33px] md:h-[281.56px] w-120 rounded-[22.13px] p-[23.13px] bg-white flex flex-col gap-5">
+                <div className="md:w-[574.33px] md:h-[281.56px] w-110 rounded-[22.13px] p-[23.13px] bg-white flex flex-col gap-5">
                   <div className="flex flex-row justify-between items-center">
                     <img src={testimonial.icon} alt="" />
                     <img src={testimonial.rating} alt="" />

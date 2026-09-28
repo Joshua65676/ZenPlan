@@ -12,18 +12,18 @@ const FAQ: React.FC = () => {
 
   return (
     <section id="faq" className="bg-linear-to-tl from-white to-PurpleNormal/25">
-      <main className="container mx-auto max-w-7xl w-full py-10 flex flex-col gap-20">
+      <main className="container mx-auto max-w-7xl w-full px-8 py-10 flex flex-col gap-20">
         <h2 className="font-outfit font-medium text-[20px] leading-[150%] tracking-[0%] text-center text-PurpleNormal">
           Frequently Ask Questions
         </h2>
-        <div className="flex md:flex-row justify-between flex-col gap-8">
+        <div className="flex md:flex-row flex-col gap-8 md:gap-40 items-center">
           <div className="flex flex-col items-center gap-5">
             {FAQList.map((card, index) => {
               const isOpen = visible === index;
               return (
                 <div
                   key={index}
-                  className="overflow-hidden px-5 md:w-139.5 w-120 rounded-[10px] border bg-white border-BorderColor"
+                  className="overflow-hidden px-5 md:w-139.5 w-110 rounded-[10px] border bg-white border-BorderColor"
                 >
                   <button
                     onClick={() => toggleFAQ(index)}
@@ -42,7 +42,7 @@ const FAQ: React.FC = () => {
                     className={`transition-all duration-200 ease-in-out w-125 -ml-8 ${isOpen ? "opacity-100 border-[0.92px] border-BorderLine" : "opacity-0 overflow-hidden"}`}
                   />
                   <div
-                    className={`transition-all duration-200 ease-in-out w-110 md:w-139.5 font-outfit font-[600px] text-[18px] text-black leading-[130%] tracking-normal ${isOpen ? "opacity-100 py-3 max-h-40" : "opacity-0 overflow-hidden py-0 max-h-0"}`}
+                    className={`transition-all duration-200 ease-in-out w-105 md:w-139.5 font-outfit font-[600px] text-[18px] text-black leading-[130%] tracking-normal ${isOpen ? "opacity-100 py-3 max-h-40" : "opacity-0 overflow-hidden py-0 max-h-0"}`}
                   >
                     {card.answer}
                   </div>

@@ -95,7 +95,7 @@ const Navbar: React.FC = () => {
       />
 
       <aside
-        className={`fixed right-0 top-0 z-50 h-full w-[78%] max-w-75 bg-white p-5 pt-24 shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed right-0 top-0 z-50 h-screen w-[78%] max-w-75 bg-white p-5 pt-12 shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
