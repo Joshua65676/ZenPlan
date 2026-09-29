@@ -92,7 +92,7 @@ const AddReminder = ({ onClose, onSubmit }: Props) => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="bg-white rounded-[10px] p-6 w-105 max-w-150 shadow-custom flex flex-col gap-8 items-center"
+          className="flex max-h-[90dvh] w-full max-w-xl flex-col items-center gap-8 overflow-y-auto rounded-[10px] bg-white p-5 shadow-custom sm:p-6"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex flex-row items-center justify-between w-full">

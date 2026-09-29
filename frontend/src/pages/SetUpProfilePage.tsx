@@ -102,7 +102,7 @@ const SetupProfilePage = () => {
   }
 
   return (
-    <section className="bg-white w-full container max-w-7xl mx-auto py-5">
+    <section className="container mx-auto w-full max-w-7xl bg-white px-4 py-5 sm:px-6">
       <motion.main
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -111,7 +111,7 @@ const SetupProfilePage = () => {
       >
         {/* navbar */}
         <main className="flex items-center justify-between flex-row">
-          <h2 className="font-outfit font-semibold text-[36px] leading-[130%] tracking-normal text-black">
+          <h2 className="font-outfit text-[28px] font-semibold leading-[130%] text-black sm:text-[36px]">
             Zen<span className="text-Purple">Plan</span>
           </h2>
           <div className="flex flex-row items-center justify-center text-center gap-4">
@@ -127,7 +127,7 @@ const SetupProfilePage = () => {
           <div className="flex flex-col items-center justify-center text-center gap-3">
             <img src={Logo} alt="Logo" className="" />
             <div>
-              <h2 className="font-outfit font-semibold text-[36px] leading-[130%] tracking-normal text-black">
+              <h2 className="font-outfit text-[28px] font-semibold leading-[130%] text-black sm:text-[36px]">
                 Welcome to Zen<span className="text-Purple">Plan</span>,{" "}
                 {user?.name ?? "there"}👋🏾
               </h2>
@@ -169,7 +169,7 @@ const SetupProfilePage = () => {
           </div>
 
           {/* Button */}
-          <div className="md:w-112.75 h-11.25 rounded-xl flex items-center justify-center bg-Purple">
+          <div className="flex h-11.25 w-full max-w-112.75 items-center justify-center rounded-xl bg-Purple">
             <button
               onClick={handleSubmit}
               disabled={loading}

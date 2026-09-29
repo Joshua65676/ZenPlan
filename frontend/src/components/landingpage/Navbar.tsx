@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
             className="flex flex-row gap-2.5 text-center items-center"
           >
             <img src={Logo} alt="logo" className="w-12.5 h-12.5" />
-            <h2 className="font-outfit font-semibold text-[36px] leading-[130%] tracking-normal text-black">
+            <h2 className="font-outfit text-[28px] font-semibold leading-[130%] text-black sm:text-[36px]">
               Zen<span className="text-Purple">Plan</span>
             </h2>
           </Link>
@@ -53,7 +53,7 @@ const Navbar: React.FC = () => {
 
             <Link
               to="/signup"
-              className="flex items-center justify-center rounded-xl border border-black bg-white px-4 py-2.5 font-outfit text-[14px] leading-[130%] tracking-normal text-black transition-all duration-200 hover:bg-Purple hover:text-white hover:border-Purple"
+              className="hidden items-center justify-center rounded-xl border border-black bg-white px-4 py-2.5 font-outfit text-[14px] leading-[130%] text-black transition-all duration-200 hover:border-Purple hover:bg-Purple hover:text-white md:flex"
             >
               Sign up now
             </Link>

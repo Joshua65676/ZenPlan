@@ -98,7 +98,7 @@ const NotificationsPage: React.FC = () => {
   };
 
   return (
-    <section className="bg-white w-full container max-w-7xl mx-auto py-5">
+    <section className="container mx-auto w-full max-w-7xl bg-white px-4 py-5 sm:px-6">
       <motion.main
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -107,7 +107,7 @@ const NotificationsPage: React.FC = () => {
       >
         {/* navbar */}
         <main className="flex items-center justify-between flex-row">
-          <h2 className="font-outfit font-semibold text-[36px] leading-[130%] tracking-normal text-black">
+          <h2 className="font-outfit text-[28px] font-semibold leading-[130%] text-black sm:text-[36px]">
             Zen<span className="text-Purple">Plan</span>
           </h2>
           <div className="flex flex-row items-center justify-center text-center gap-4">
@@ -123,7 +123,7 @@ const NotificationsPage: React.FC = () => {
           <div className="flex flex-col items-center justify-center text-center gap-3">
             <img src={Logo} alt="Logo" className="" />
             <div>
-              <h2 className="font-outfit font-semibold text-[36px] leading-[130%] tracking-normal text-black">
+              <h2 className="font-outfit text-[28px] font-semibold leading-[130%] text-black sm:text-[36px]">
                 Stay in the Loop
               </h2>
               <p className="font-outfit font-[400px] md:w-104.75 text-[16px] leading-[130%] tracking-normal text-Grey">
@@ -134,7 +134,11 @@ const NotificationsPage: React.FC = () => {
           </div>
           {/* Image */}
           <div className="flex flex-col gap-3">
-            <img src={NotificationImg} alt="Notification" className="" />
+            <img
+              src={NotificationImg}
+              alt="Notification"
+              className="h-auto max-w-full"
+            />
             <label className="flex flex-row items-center text-center gap-3">
               <span
                 onClick={handleToggle}
@@ -153,7 +157,7 @@ const NotificationsPage: React.FC = () => {
           <>
             <button
               onClick={handleContinue}
-              className="md:w-112.5 md:h-11.25 rounded-xl bg-LightBlue py-0.75 px-1.25 cursor-pointer"
+              className="h-11.25 w-full max-w-112.5 rounded-xl bg-LightBlue px-1.25 py-0.75 md:w-112.5"
             >
               <span className="font-outfit font-[400px] text-[16px] text-Grey leading-[130%] tracking-normal">
                 Launch SyncFlow

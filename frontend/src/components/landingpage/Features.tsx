@@ -31,12 +31,11 @@ const Features: React.FC = () => {
       `,
           backgroundSize: "40px 40px",
           maskImage: "linear-gradient(to top right, transparent 50%, black)",
-          WebkitMaskImage:
-            "linear-gradient(to top right, transparent, black)",
+          WebkitMaskImage: "linear-gradient(to top right, transparent, black)",
         }}
       />
 
-      <main className="relative container mx-auto max-w-7xl w-full flex flex-col md:gap-5 gap-10 py-3 px-8">
+      <main className="relative container mx-auto flex w-full max-w-7xl flex-col gap-10 px-4 py-3 sm:px-6 md:gap-5 md:px-8">
         <div className="flex flex-col items-center text-center gap-3">
           <h2 className="font-outfit font-[400px] text-[20px] leading-[130%] tracking-normal text-center text-PurpleNormal">
             Features
@@ -49,15 +48,12 @@ const Features: React.FC = () => {
         <ul className="grid md:grid-cols-3 grid-cols-1 gap-5 md:gap-8 justify-items-center">
           {FeaturesList.map((feature) => (
             <li key={feature.id}>
-              <div className="flex flex-col items-start text-start gap-3 p-10 border-[1.17px] border-BorderColor rounded-[20px] w-95.75 h-75 bg-white">
-                <img
-                  src={feature.icon}
-                  alt={feature.name}
-                />
+              <div className="flex h-auto min-h-75 w-full max-w-95.75 flex-col items-start gap-3 rounded-[20px] border-[1.17px] border-BorderColor bg-white p-6 text-start sm:p-8 md:p-10">
+                <img src={feature.icon} alt={feature.name} />
                 <h2 className="font-outfit font-[400px] text-[24px] leading-[130%] tracking-normal text-black">
                   {feature.name}
                 </h2>
-                <p className="font-outfit font-[400px] text-[16px] leading-[130%] tracking-normal text-Grey w-69">
+                <p className="w-full max-w-69 font-outfit text-[16px] leading-[130%] text-Grey">
                   {feature.description}
                 </p>
               </div>

@@ -84,11 +84,11 @@ const AddEvent = ({ onClose, onSubmit }: Props) => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="bg-white rounded-[10px] p-6 w-85 h-157 shadow-custom flex flex-col gap-8 items-center"
+          className="flex max-h-[90dvh] w-full max-w-md flex-col items-center gap-8 overflow-y-auto rounded-[10px] bg-white p-5 shadow-custom sm:p-6"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="flex flex-row items-center justify-between text-center w-76">
+          <div className="flex w-full flex-row items-center justify-between text-center">
             <div className="flex flex-row items-center justify-center gap-2 text-center">
               <img src={Bcalendar} alt="" />
               <h2 className="font-outfit font-medium text-[18px] text-black leading-[130%] tracking-normal">
@@ -126,12 +126,12 @@ const AddEvent = ({ onClose, onSubmit }: Props) => {
                 Meeting type
               </label>
 
-              <div ref={meetingTypeRef} className="relative w-76">
+              <div ref={meetingTypeRef} className="relative w-full">
                 <button
                   id="meetingType"
                   type="button"
                   onClick={() => setIsMeetingTypeOpen((prev) => !prev)}
-                  className="w-76 h-8.5 rounded-xl border bg-LightWhite text-black cursor-pointer font-outfit font-[400px] leading-[130%] tracking-normal text-[14px] flex items-center justify-between px-3"
+                  className="flex h-8.5 w-full items-center justify-between rounded-xl border bg-LightWhite px-3 font-outfit text-[14px] text-black"
                 >
                   <span>{meetingType === "group" ? "Group" : "1-on-1"}</span>
                   <span
@@ -170,7 +170,7 @@ const AddEvent = ({ onClose, onSubmit }: Props) => {
               </div>
             </div>
             {/* Date & Time */}
-            <div className="grid grid-cols-2 gap-3 w-76">
+            <div className="grid w-full grid-cols-2 gap-3">
               <div className="flex flex-col gap-2 items-start justify-start">
                 <label className="font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal">
                   Date
@@ -180,7 +180,7 @@ const AddEvent = ({ onClose, onSubmit }: Props) => {
                   type="date"
                   value={eventDate}
                   onChange={(e) => setEventDate(e.target.value)}
-                  className="w-35.75 h-8.5 rounded-xl border py-0.5 px-[2.5px] pl-2 bg-LightWhite font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal cursor-pointer"
+                  className="h-8.5 w-full min-w-0 rounded-xl border bg-LightWhite px-2 py-0.5 font-outfit text-[14px] font-bold text-black"
                 />
               </div>
               <div className="flex flex-col gap-2 items-start justify-start">
@@ -192,7 +192,7 @@ const AddEvent = ({ onClose, onSubmit }: Props) => {
                   type="time"
                   value={eventTime}
                   onChange={(e) => setEventTime(e.target.value)}
-                  className="w-35.75 pl-2 h-8.5 rounded-xl border py-0.5 px-[2.5px] bg-LightWhite font-outfit font-bold text-[14px] text-black leading-[130%] tracking-normal cursor-pointer"
+                  className="h-8.5 w-full min-w-0 rounded-xl border bg-LightWhite px-2 py-0.5 font-outfit text-[14px] font-bold text-black"
                 />
               </div>
             </div>

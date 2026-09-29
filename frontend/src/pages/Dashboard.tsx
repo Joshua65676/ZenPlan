@@ -38,10 +38,10 @@ const Dashboard: React.FC = () => {
   return (
     <section className="min-h-screen bg-black">
       <div className="flex min-h-screen">
-        <aside className="fixed left-0 top-0 z-10 w-80 min-h-screen bg-black">
+        <aside className="fixed inset-x-0 bottom-0 z-20 h-16 bg-black md:inset-y-0 md:right-auto md:h-auto md:w-64 md:min-h-screen lg:w-80">
           <SideBar activeItem={activeItem} onChangeActiveItem={setActiveItem} />
         </aside>
-        <main className="ml-80 flex-1 min-h-screen bg-white p-10 rounded-[20px]">
+        <main className="min-h-screen min-w-0 w-full flex-1 rounded-t-[20px] bg-white px-4 pt-5 pb-24 sm:px-6 md:ml-64 md:rounded-[20px] md:px-8 md:py-8 lg:ml-80 lg:p-10">
           {renderContent()}
         </main>
       </div>

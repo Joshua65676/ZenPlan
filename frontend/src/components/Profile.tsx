@@ -35,7 +35,7 @@ const Profile: React.FC = () => {
 
   return (
     <main className="flex flex-col items-start justify-start gap-3">
-      <div className="w-62 border-[0.5px] text-white"></div>
+      <div className="w-52 border-[0.5px] text-white lg:w-62"></div>
 
       <div className="flex flex-row items-center justify-center gap-3">
         <button type="button" className="overflow-hidden rounded-xl">

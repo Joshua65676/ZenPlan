@@ -11,8 +11,8 @@ const ListButton: React.FC<ListButtonProps> = ({
   onChangeActiveItem,
 }) => {
   return (
-    <main className="flex flex-col items-center justify-start gap-59">
-      <ul className="flex flex-col items-center justify-start gap-1">
+    <main className="flex w-full flex-row items-center justify-between gap-0 md:flex-col md:items-center md:justify-start md:gap-59">
+      <ul className="flex flex-row items-center justify-center gap-0 md:flex-col md:gap-1">
         {MenuList.map((item) => {
           const itemKey = `menu1-${item.id}`;
           const isActive = activeItem === itemKey;
@@ -21,18 +21,20 @@ const ListButton: React.FC<ListButtonProps> = ({
               <button
                 type="button"
                 onClick={() => onChangeActiveItem(itemKey)}
-                className={`group cursor-pointer flex flex-row items-center justify-start gap-2 w-62 h-9.5 rounded-xl py-3 px-3 transition duration-150 ${
+                aria-label={item.name}
+                title={item.name}
+                className={`group flex h-12 w-11 cursor-pointer flex-row items-center justify-center rounded-xl px-0 transition duration-150 md:h-9.5 md:w-52 md:justify-start md:gap-2 md:px-3 lg:w-62 ${
                   isActive ? "bg-white text-black" : "text-white"
                 } hover:bg-white hover:text-black`}
               >
                 <img
                   src={item.icon}
                   alt={`${item.name} icon`}
-                  className={`filter transition duration-150 ${
+                  className={`h-5 w-5 filter transition duration-150 md:h-auto md:w-auto ${
                     isActive ? "invert" : "group-hover:invert"
                   }`}
                 />
-                <span className="font-outfit font-[400px] text-[14px] leading-[130%] tracking-normal">
+                <span className="hidden font-outfit text-[14px] leading-[130%] md:inline">
                   {item.name}
                 </span>
               </button>
@@ -41,7 +43,7 @@ const ListButton: React.FC<ListButtonProps> = ({
         })}
       </ul>
 
-      <ul className="flex flex-col items-center justify-start gap-1">
+      <ul className="flex flex-row items-center justify-center gap-0 md:flex-col md:gap-1">
         {MenuList2.map((item) => {
           const itemKey = `menu2-${item.id}`;
           const isActive = activeItem === itemKey;
@@ -50,18 +52,20 @@ const ListButton: React.FC<ListButtonProps> = ({
               <button
                 type="button"
                 onClick={() => onChangeActiveItem(itemKey)}
-                className={`group cursor-pointer flex flex-row items-center justify-start gap-2 w-62 h-9.5 rounded-xl py-3 px-3 transition duration-150 ${
+                aria-label={item.name}
+                title={item.name}
+                className={`group flex h-12 w-11 cursor-pointer flex-row items-center justify-center rounded-xl px-0 transition duration-150 md:h-9.5 md:w-52 md:justify-start md:gap-2 md:px-3 lg:w-62 ${
                   isActive ? "bg-white text-black" : "text-white"
                 } hover:bg-white hover:text-black`}
               >
                 <img
                   src={item.icon}
                   alt={`${item.name} icon`}
-                  className={`filter transition duration-150 ${
+                  className={`h-5 w-5 filter transition duration-150 md:h-auto md:w-auto ${
                     isActive ? "invert" : "group-hover:invert"
                   }`}
                 />
-                <span className="font-outfit font-[400px] text-[14px] leading-[130%] tracking-normal">
+                <span className="hidden font-outfit text-[14px] leading-[130%] md:inline">
                   {item.name}
                 </span>
               </button>

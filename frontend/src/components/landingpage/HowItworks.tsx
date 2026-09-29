@@ -3,21 +3,39 @@ import { CreateTaskImage } from "../../assets";
 
 const HowItworks: React.FC = () => {
   return (
-    <section id="how-it-works" className="bg-BgWhite py-15 px-8 max-w-full scroll-mt-20">
-      <main className="container mx-auto max-w-7xl w-full px-8 flex flex-col md:gap-5 gap-10">
+    <section
+      id="how-it-works"
+      className="max-w-full scroll-mt-20 bg-BgWhite px-4 py-15 sm:px-6 md:px-8"
+    >
+      <main className="container mx-auto flex w-full max-w-7xl flex-col gap-10 px-0 md:gap-5 md:px-4">
         <div className="flex flex-col items-center text-center gap-3">
-            <h2 className="font-outfit font-[400px] text-[20px] leading-[130%] tracking-normal text-center text-PurpleNormal">How it works</h2>
-            <p className="font-outfit font-medium md:w-157 md:text-[32px] leading-[130%] tracking-[0%] text-center text-black">Intuitive design that makes productivity feel natural and easy</p>
+          <h2 className="font-outfit font-[400px] text-[20px] leading-[130%] tracking-normal text-center text-PurpleNormal">
+            How it works
+          </h2>
+          <p className="w-full max-w-157 font-outfit font-medium leading-[130%] text-center text-black md:text-[32px]">
+            Intuitive design that makes productivity feel natural and easy
+          </p>
         </div>
         <div className="flex md:flex-row flex-col-reverse md:justify-between items-center gap-5">
           <div className="flex flex-col gap-3 text-center md:text-start">
-            <span className="font-outfit font-[400px] text-[24px] leading-[130%] tracking-normal text-Brown">Clear your mind</span>
-            <h2 className="font-outfit font-[400px] md:w-85.75 md:text-[36px] leading-[130%] tracking-normal text-black">Create tasks and set priorities</h2>
-            <p className="font-outfit font-[400px] text-[16px] leading-[130%] teacking-[0%] text-Grey md:w-114.25 w-100">Break down complex projects into manageable steps. Focus on what matters most.</p>
+            <span className="font-outfit font-[400px] text-[24px] leading-[130%] tracking-normal text-Brown">
+              Clear your mind
+            </span>
+            <h2 className="w-full font-outfit text-[28px] leading-[130%] text-black md:text-[36px]">
+              Create tasks and set priorities
+            </h2>
+            <p className="w-full max-w-114.25 font-outfit text-[16px] leading-[130%] text-Grey">
+              Break down complex projects into manageable steps. Focus on what
+              matters most.
+            </p>
           </div>
 
           <div>
-            <img src={CreateTaskImage} alt="task logo" className="md:h-full h-120"/>
+            <img
+              src={CreateTaskImage}
+              alt="task logo"
+              className="h-auto w-full max-w-2xl object-contain md:h-full"
+            />
           </div>
         </div>
       </main>

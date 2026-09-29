@@ -21,8 +21,8 @@ const Links: React.FC<LinksProps> = ({
 }) => {
   return (
     <main className="flex flex-col items-start gap-5">
-      <div>
-        <ul className="flex flex-row items-center justify-center bg-LightWhite h-9.5 w-115 gap-2 rounded-[20px] py-1.5 px-2.5">
+      <div className="w-full max-w-full overflow-x-auto">
+        <ul className="flex min-w-max flex-row items-center justify-center gap-2 rounded-[20px] bg-LightWhite px-2.5 py-1.5">
           {TaskList.map((item) => {
             const isActive = activeLink === item.id;
             const widthClass =

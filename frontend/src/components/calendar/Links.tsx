@@ -9,7 +9,7 @@ type LinksProps = {
 const Links: React.FC<LinksProps> = ({ activeLink, onChangeActiveLink }) => {
   return (
     <main>
-      <ul className="flex flex-row items-center justify-center bg-LightWhite h-9.5 w-66.75 gap-0.5 rounded-[20px] py-1.5 px-2.5">
+      <ul className="flex w-fit max-w-full flex-row items-center justify-center gap-0.5 overflow-x-auto rounded-[20px] bg-LightWhite px-2.5 py-1.5">
         {CalendarList.map((item) => {
           const isActive = activeLink === item.id;
           const widthClass =

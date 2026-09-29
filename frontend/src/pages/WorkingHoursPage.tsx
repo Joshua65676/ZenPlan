@@ -124,7 +124,7 @@ const WorkingHoursPage = () => {
   }
 
   return (
-    <section className="bg-white w-full container max-w-7xl mx-auto py-5">
+    <section className="container mx-auto w-full max-w-7xl bg-white px-4 py-5 sm:px-6">
       <motion.main
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -133,7 +133,7 @@ const WorkingHoursPage = () => {
       >
         {/* navbar */}
         <main className="flex items-center justify-between flex-row">
-          <h2 className="font-outfit font-semibold text-[36px] leading-[130%] tracking-normal text-black">
+          <h2 className="font-outfit text-[28px] font-semibold leading-[130%] text-black sm:text-[36px]">
             Zen<span className="text-Purple">Plan</span>
           </h2>
           <div className="flex flex-row items-center justify-center text-center gap-4">
@@ -149,10 +149,10 @@ const WorkingHoursPage = () => {
           <div className="flex flex-col items-center justify-center text-center gap-3">
             <img src={Logo} alt="Logo" className="" />
             <div>
-              <h2 className="font-outfit font-semibold text-[36px] leading-[130%] tracking-normal text-black">
+              <h2 className="font-outfit text-[28px] font-semibold leading-[130%] text-black sm:text-[36px]">
                 Protect Your Time
               </h2>
-              <p className="font-outfit font-[400px] w-110.75 text-[16px] leading-[130%] tracking-normal text-Grey">
+              <p className="w-full max-w-110.75 font-outfit text-[16px] leading-[130%] text-Grey">
                 Define your working hours so we know when you’re available for
                 meetings.
               </p>
@@ -160,7 +160,7 @@ const WorkingHoursPage = () => {
           </div>
 
           {/* main time */}
-          <main className="flex flex-col gap-6 w-113.25">
+          <main className="flex w-full max-w-113.25 flex-col gap-6">
             <div className="flex flex-row gap-2 text-start">
               <img src={TimeZone} alt="Timezone" />
               <span className="font-outfit font-bold items-center flex text-black text-[14px] leading-[130%] tracking-normal">
@@ -172,7 +172,7 @@ const WorkingHoursPage = () => {
               title="timezone"
               value={timezone}
               onChange={(e) => setTimezone(e.target.value)}
-              className="w-112.5 h-11.25 bg-LightWhite border border-Grey text-black text-[16px] font-[400px] leading-[130%] tracking-normal font-outfit rounded-xl px-1.25 p-2.5 transition-all cursor-pointer"
+              className="h-11.25 w-full rounded-xl border border-Grey bg-LightWhite p-2.5 px-1.25 font-outfit text-[16px] text-black transition-all"
             >
               {TIMEZONES.map((tz) => (
                 <option key={tz} value={tz}>
@@ -195,7 +195,7 @@ const WorkingHoursPage = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="flex items-center justify-between bg-white border-[0.5px] border-Grey rounded-xl p-2.5 md:w-113"
+                  className="flex w-full flex-col items-stretch justify-between gap-3 rounded-xl border-[0.5px] border-Grey bg-white p-2.5 sm:flex-row sm:items-center md:w-113"
                 >
                   <div className="flex items-center gap-2 w-32">
                     <button
@@ -219,7 +219,7 @@ const WorkingHoursPage = () => {
                   </div>
 
                   {hour.is_available ? (
-                    <div className="flex items-center gap-2">
+                    <div className="flex w-full items-center gap-2 sm:w-auto">
                       <input
                         type="time"
                         placeholder="time"
@@ -227,7 +227,7 @@ const WorkingHoursPage = () => {
                         onChange={(e) =>
                           updateTime(hour.day, "start_time", e.target.value)
                         }
-                        className="bg-LightWhite border-LightWhite border text-black text-[14px] rounded-xl px-[2.5px] py-0.5 w-25.75 h-13 font-outfit font-[400px] leading-[130%] tracking-normal cursor-pointer"
+                        className="h-11 min-w-0 w-full rounded-xl border border-LightWhite bg-LightWhite px-1 py-0.5 font-outfit text-[14px] text-black sm:h-13 sm:w-25.75"
                       />
                       <span className="text-Grey text-[14px] font-outfit font-[400px] leading-[130%] tracking-normal">
                         to
@@ -239,7 +239,7 @@ const WorkingHoursPage = () => {
                         onChange={(e) =>
                           updateTime(hour.day, "end_time", e.target.value)
                         }
-                        className="bg-LightWhite border-LightWhite border text-black text-[14px] rounded-xl px-[2.5px] py-0.5 w-25.75 h-13 font-outfit font-[400px] leading-[130%] tracking-normal cursor-pointer"
+                        className="h-11 min-w-0 w-full rounded-xl border border-LightWhite bg-LightWhite px-1 py-0.5 font-outfit text-[14px] text-black sm:h-13 sm:w-25.75"
                       />
                     </div>
                   ) : (

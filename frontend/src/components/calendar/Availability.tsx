@@ -140,7 +140,7 @@ const Availability = () => {
   }
 
   return (
-    <section className="rounded-[20px] border border-BorderLight p-10 shadow-sm">
+    <section className="rounded-[20px] border border-BorderLight p-4 shadow-sm sm:p-6 md:p-10">
       <motion.main
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -150,7 +150,7 @@ const Availability = () => {
         {/* time setting */}
         <main className="flex flex-col items-center gap-3">
           {/* main time */}
-          <main className="flex flex-col gap-6 w-113.25">
+          <main className="flex w-full max-w-113.25 flex-col gap-6">
             <h2 className="font-outfit font-semibold text-[20px] leading-[130%] tracking-0 text-PurpleNormal">
               Working hours
             </h2>
@@ -161,7 +161,7 @@ const Availability = () => {
               </span>
             </div>
             {/* Select timezone: */}
-            <div ref={timezoneRef} className="relative w-112.5">
+            <div ref={timezoneRef} className="relative w-full">
               <button
                 type="button"
                 onClick={() => setIsTimezoneOpen((prev) => !prev)}
@@ -214,7 +214,7 @@ const Availability = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="flex items-center justify-between bg-white border-[0.5px] border-Grey rounded-xl p-2.5 md:w-113"
+                  className="flex w-full flex-col items-stretch justify-between gap-3 rounded-xl border-[0.5px] border-Grey bg-white p-2.5 sm:flex-row sm:items-center md:w-113"
                 >
                   <div className="flex items-center gap-2 w-32">
                     <button
@@ -238,7 +238,7 @@ const Availability = () => {
                   </div>
 
                   {hour.is_available ? (
-                    <div className="flex items-center gap-2">
+                    <div className="flex w-full items-center gap-2 sm:w-auto">
                       <input
                         type="time"
                         placeholder="time"
@@ -246,7 +246,7 @@ const Availability = () => {
                         onChange={(e) =>
                           updateTime(hour.day, "start_time", e.target.value)
                         }
-                        className="bg-LightWhite border-LightWhite border text-black text-[14px] rounded-xl px-[2.5px] py-0.5 w-25.75 h-13 font-outfit font-[400px] leading-[130%] tracking-normal cursor-pointer"
+                        className="h-11 min-w-0 w-full rounded-xl border border-LightWhite bg-LightWhite px-1 py-0.5 font-outfit text-[14px] text-black sm:h-13 sm:w-25.75"
                       />
                       <span className="text-Grey text-[14px] font-outfit font-[400px] leading-[130%] tracking-normal">
                         to
@@ -258,7 +258,7 @@ const Availability = () => {
                         onChange={(e) =>
                           updateTime(hour.day, "end_time", e.target.value)
                         }
-                        className="bg-LightWhite border-LightWhite border text-black text-[14px] rounded-xl px-[2.5px] py-0.5 w-25.75 h-13 font-outfit font-[400px] leading-[130%] tracking-normal cursor-pointer"
+                        className="h-11 min-w-0 w-full rounded-xl border border-LightWhite bg-LightWhite px-1 py-0.5 font-outfit text-[14px] text-black sm:h-13 sm:w-25.75"
                       />
                     </div>
                   ) : (

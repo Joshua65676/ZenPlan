@@ -37,15 +37,15 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <section className="w-full container max-w-7xl bg-white">
-      <main className="flex items-center justify-between flex-row">
+    <section className="container min-h-screen w-full max-w-7xl bg-white">
+      <main className="flex min-h-screen flex-col items-center justify-center gap-8 py- md:flex-row md:justify-between">
         {/* Image and testimonials section (hidden on mobile)  */}
         <div className="w-1/2 relative hidden md:block">
           <div className="">
             <img src={LoginImage} alt="Login" className="w-full h-screen" />
           </div>
-          <div className="absolute bottom-3 left-15 bg-white bg-opacity-80 p-6 rounded-lg shadow-lg w-127.75 flex flex-col items-start gap-4">
-            <p className="w-116 h-13 text-[14px] font-outfit text-black font-normal leading-[130%] tracking-normal">
+          <div className="absolute bottom-3 left-4 right-4 flex max-w-127.75 flex-col items-start gap-4 rounded-lg bg-white/80 p-6 shadow-lg">
+            <p className="w-full font-outfit text-[14px] font-normal leading-[130%] text-black">
               “Honestly, I used to hate to-do lists they felt heavy and
               stressful. But this app made it fun. Every checkmark feels like a
               tiny win, and those little wins add up. For once, my tasks feel
@@ -58,7 +58,7 @@ const LoginPage: React.FC = () => {
         </div>
 
         {/* Login form section  */}
-        <div className="w-110 h-62 flex flex-col gap-10 items-center justify-center">
+        <div className="flex w-full max-w-110 flex-col items-center justify-center gap-10 py-6">
           <div className="flex flex-col items-center justify-center text-center gap-3">
             <img src={Logo} alt="Logo" className="" />
             <div>
@@ -90,7 +90,7 @@ const LoginPage: React.FC = () => {
             <button
               onClick={handleGoogleLogin}
               disabled={loading}
-              className="md:w-112.75 h-12.5 hover:bg-slate-500/50 hover:text-white font-roboto font-semibold text-[14px] leading-[130%] teacking-normal text-black rounded-xl border gap-3 flex items-center justify-center cursor-pointer"
+              className="flex h-12.5 w-70 md:w-112.75 items-center justify-center gap-3 rounded-xl border font-roboto text-[14px] font-semibold text-black hover:bg-slate-500/50 hover:text-white"
             >
               {loading ? (
                 "Loading..."

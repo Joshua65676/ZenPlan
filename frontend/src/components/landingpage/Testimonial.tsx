@@ -12,7 +12,7 @@ const Testimonial: React.FC = () => {
             <h2 className="font-outfit font-medium text-[20px] text-center leading-[130%] tracking-normal text-PurpleNormal">
               Testimonials
             </h2>
-            <p className="font-outfit font-medium md:text-[32px] text-center leading-[130%] tracking-normal text-black md:w-169">
+            <p className="w-full max-w-169 font-outfit text-center font-medium leading-[130%] text-black md:text-[32px]">
               Every story shared here reflects trust, impact, and real results.
             </p>
           </div>
@@ -21,20 +21,24 @@ const Testimonial: React.FC = () => {
           <ul className="grid md:grid-cols-2 grid-cols-1 md:gap-10 gap-8 justify-items-center">
             {TestimonialList.map((testimonial) => (
               <li key={testimonial.id}>
-                <div className="md:w-[574.33px] md:h-[281.56px] w-110 rounded-[22.13px] p-[23.13px] bg-white flex flex-col gap-5">
+                <div className="flex h-auto w-full max-w-[574.33px] flex-col gap-5 rounded-[22.13px] bg-white p-5 sm:p-6 md:min-h-[281.56px]">
                   <div className="flex flex-row justify-between items-center">
                     <img src={testimonial.icon} alt="" />
                     <img src={testimonial.rating} alt="" />
                   </div>
-                  <p className="md:w-[530.08px] font-outfit font-[400px] text-[16px] leading-[190%] tracking-[0%] text-black">
+                  <p className="w-full max-w-[530.08px] font-outfit text-[16px] leading-[190%] text-black">
                     {testimonial.description}
                   </p>
-                  <div className="w-82 border-[0.92px] border-CardBorder"/>
+                  <div className="w-full border-[0.92px] border-CardBorder" />
                   <div className="flex flex-row gap-5 items-center">
                     <img src={testimonial.avatar} alt="" />
                     <div className="flex flex-col gap-2">
-                      <span className="font-outfit font-bold text-[18px] leading-[100%] tracking-[0%] text-black">{testimonial.name}</span>
-                      <span className="font-outfit font-[300px] text-[16px] leading-[100%] tracking-[0%] text-Grey">{testimonial.title}</span>
+                      <span className="font-outfit font-bold text-[18px] leading-[100%] tracking-[0%] text-black">
+                        {testimonial.name}
+                      </span>
+                      <span className="font-outfit font-[300px] text-[16px] leading-[100%] tracking-[0%] text-Grey">
+                        {testimonial.title}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -44,18 +48,18 @@ const Testimonial: React.FC = () => {
         </main>
         {/* BUTTON */}
         <div className="flex flex-col items-center gap-5">
-          <h2 className="font-outfit font-medium text-[32px] leading-[130%] tracking-normal text-black">
+          <h2 className="text-center font-outfit text-[24px] font-medium leading-[130%] text-black sm:text-[32px]">
             Ready to be more productive?
           </h2>
-          <div className="flex flex-row items-center gap-5">
-           <Link to="/signup">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-5">
+            <Link to="/signup">
               <button className="bg-PurpleNormal text-white cursor-pointer font-outfit font-medium text-[16px] leading-[130%] tracking-normal py-3 px-5 rounded-xl w-40.5">
                 Get Started
               </button>
             </Link>
             <button className="w-40.5 flex gap-2 rounded-xl cursor-pointer border py-3 px-5 border-black text-[16px] text-center items-center font-outfit font-medium text-black leading-[130%] tracking-[0%]">
               Learn more
-              <img src={Arrow} alt=""/>
+              <img src={Arrow} alt="" />
             </button>
           </div>
         </div>
