@@ -18,8 +18,8 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
 
   return (
     <section className="flex flex-col gap-4">
-      <main className="flex flex-row gap-4 justify-between">
-        <div className="flex flex-col gap-3">
+      <main className="flex flex-col gap-4 justify-between sm:flex-row">
+        <div className="flex min-w-0 flex-1 flex-col gap-3">
           <label
             htmlFor="full-name"
             className="font-outfit text-[14px] leading-[130%] tracking-normal font-[400px] text-black"
@@ -32,11 +32,11 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
             value={fullName || user?.name || ""}
             onChange={(e) => onFullNameChange(e.target.value)}
             placeholder="Enter your full name"
-            className="h-11 w-93.25 rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2 font-outfit font-[400px] leading-[130%] tracking-normal text-[14px] text-Grey outline-none transition focus:border-LightBlue focus:bg-white"
+            className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2 font-outfit font-[400px] leading-[130%] tracking-normal text-[14px] text-Grey outline-none transition focus:border-LightBlue focus:bg-white"
           />
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex min-w-0 flex-1 flex-col gap-3">
           <label
             htmlFor="email"
             className="font-outfit text-[14px] leading-[130%] tracking-normal font-[400px] text-black"
@@ -49,7 +49,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({
             value={email || user?.email || ""}
             onChange={(e) => onEmailChange(e.target.value)}
             placeholder="yourname@gmail.com"
-            className="h-11 w-93.25 rounded-xl border border-slate-200 bg-LightWhite p-4 px-2.5 py-2 font-outfit font-[400px] leading-[130%] tracking-normal text-[14px] text-Grey outline-none transition focus:border-LightBlue focus:bg-white"
+            className="h-11 w-full rounded-xl border border-slate-200 bg-LightWhite p-4 px-2.5 py-2 font-outfit font-[400px] leading-[130%] tracking-normal text-[14px] text-Grey outline-none transition focus:border-LightBlue focus:bg-white"
           />
         </div>
       </main>

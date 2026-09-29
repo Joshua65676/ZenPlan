@@ -79,8 +79,8 @@ const Details: React.FC = () => {
 
   return (
     <section className="flex flex-col gap-4">
-      <main className="flex flex-row items-center justify-between gap-3">
-        <div className="flex flex-row items-center justify-center gap-3">
+      <main className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+        <div className="flex min-w-0 flex-row items-center justify-center gap-3">
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
@@ -120,7 +120,7 @@ const Details: React.FC = () => {
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="cursor-pointer w-31.75 h-7 rounded-xl bg-LightPurple px-3 py-1.5 text-[12px] leading-[130%] tracking-normal font-outfit font-[400px] text-white transition hover:opacity-90"
+          className="h-9 w-full cursor-pointer rounded-xl bg-LightPurple px-3 py-1.5 text-[12px] leading-[130%] tracking-normal font-outfit font-[400px] text-white transition hover:opacity-90 sm:w-31.75"
         >
           Upload new photo
         </button>

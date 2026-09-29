@@ -102,16 +102,16 @@ const Pending: React.FC<TaskListProps> = ({
       {filteredTasks.map((task) => {
         const { date, time } = formatDateTime(task.created_at);
         const isChecked = task.status === "completed";
-        const titleClasses = `text-lg font-semibold ${
+        const titleClasses = `break-words text-base font-semibold sm:text-lg ${
           isChecked ? "text-slate-500 line-through" : "text-slate-900"
         }`;
 
         return (
           <article
             key={task.id}
-            className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-start sm:justify-between"
+            className="flex flex-row items-start justify-between gap-3 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:gap-5 sm:p-5"
           >
-            <div className="flex flex-1 items-start gap-4">
+            <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
               <label className="flex items-center gap-3">
                 <input
                   type="checkbox"
@@ -123,9 +123,7 @@ const Pending: React.FC<TaskListProps> = ({
                 />
               </label>
               <div className="min-w-0">
-                <h3 className={titleClasses}>
-                  {task.title}
-                </h3>
+                <h3 className={titleClasses}>{task.title}</h3>
                 <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-slate-600">
                   <span>{date}</span>
                   <span>•</span>
@@ -149,7 +147,7 @@ const Pending: React.FC<TaskListProps> = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col items-start gap-3 sm:items-end">
+            <div className="flex shrink-0 flex-col items-end gap-3">
               <span
                 className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${getPriorityClasses(
                   task.priority,

@@ -66,15 +66,15 @@ const Settings: React.FC = () => {
         <NotificationSettings />
       </main>
 
-      <div className="flex flex-row items-center justify-end gap-4">
-        <button className="w-15.25 h-7 cursor-pointer rounded-xl border px-3 py-1.5 border-black font-outfit font-[400px] text-[12px] leading-[130%] tracking-normal text-black">
+      <div className="flex flex-col-reverse items-stretch justify-end gap-3 sm:flex-row sm:items-center sm:gap-4">
+        <button className="h-9 w-full cursor-pointer rounded-xl border px-3 py-1.5 border-black font-outfit font-[400px] text-[12px] leading-[130%] tracking-normal text-black sm:w-15.25">
           Cancel
         </button>
 
         <button
           onClick={handleSaveChanges}
           disabled={saving}
-          className="w-25.25 h-7 cursor-pointer rounded-xl bg-LightPurple px-3 py-1.5 font-outfit font-[400px] text-[12px] leading-[130%] tracking-normal text-white disabled:opacity-70 disabled:cursor-not-allowed"
+          className="h-9 w-full cursor-pointer rounded-xl bg-LightPurple px-3 py-1.5 font-outfit font-[400px] text-[12px] leading-[130%] tracking-normal text-white disabled:opacity-70 disabled:cursor-not-allowed sm:w-25.25"
         >
           {saving ? "Saving..." : "Save changes"}
         </button>

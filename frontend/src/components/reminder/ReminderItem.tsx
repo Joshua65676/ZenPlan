@@ -58,10 +58,10 @@ export const ReminderListView: React.FC<ReminderListProps> = ({
       {reminders.map((reminder) => (
         <article
           key={reminder.id}
-          className="flex flex-col gap-4 items-center justify-center rounded-[10px] border border-BorderColor bg-white p-5 shadow-sm shadow-boxShadow-custom sm:flex-row sm:items-start sm:justify-between"
+          className="flex flex-row items-start justify-between gap-3 rounded-[10px] border border-BorderColor bg-white p-4 shadow-sm shadow-boxShadow-custom sm:gap-5 sm:p-5"
         >
-          <div className="flex flex-col gap-2.5 h-18">
-            <div className="flex items-center gap-3 flex-row">
+          <div className="flex min-w-0 flex-1 flex-col gap-2.5">
+            <div className="flex flex-wrap items-center gap-2">
               <h3
                 className={`text-[14px] font-outfit leading-[130%] tracking-0 font-bold ${
                   reminder.is_active ? "text-black" : "text-Gray"
@@ -84,16 +84,20 @@ export const ReminderListView: React.FC<ReminderListProps> = ({
             <div className="flex flex-wrap items-center gap-4">
               <div className="flex flex-row items-center gap-1">
                 <img src={Gcalendar} alt="" />
-                <span className="font-outfit font-[400px] text-[12px] leading-[130%] teacking-[0%] text-Grey">{formatDate(reminder.reminder_date)}</span>
+                <span className="font-outfit font-[400px] text-[12px] leading-[130%] teacking-[0%] text-Grey">
+                  {formatDate(reminder.reminder_date)}
+                </span>
               </div>
               <div className="flex flex-row items-center gap-1">
                 <img src={Gclock} alt="" />
-                <span className="font-outfit font-[400px] text-[12px] leading-[130%] teacking-[0%] text-Grey">{formatTime(reminder.reminder_time)}</span>
+                <span className="font-outfit font-[400px] text-[12px] leading-[130%] teacking-[0%] text-Grey">
+                  {formatTime(reminder.reminder_time)}
+                </span>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 justify-center mt-5">
+          <div className="mt-1 flex shrink-0 items-center justify-end gap-3 sm:mt-0">
             <button
               type="button"
               title={

@@ -102,14 +102,14 @@ const EventList: React.FC = () => {
       {events.map((event: Event) => (
         <main
           key={event.id}
-          className={`rounded-[20px] flex flex-row justify-between border border-BorderColor shadow-custom p-5 ${getEventColor(
+          className={`rounded-[20px] flex flex-row items-start justify-between gap-3 border border-BorderColor shadow-custom p-4 sm:gap-5 sm:p-5 ${getEventColor(
             event.meeting_type,
           )} hover:shadow-md transition-shadow cursor-`}
         >
           {/* Meeting Details */}
-          <div className="flex flex-col gap-3">
+          <div className="flex min-w-0 flex-1 flex-col gap-3">
             {/* Header with title and badge */}
-            <div className="flex flex-row items-start justify-between gap-3">
+            <div className="flex flex-wrap flex-row items-start justify-between gap-2 sm:gap-3">
               <div className="flex-1">
                 <h3 className="text-black text-[14px] font-outfit font-bold leading-[130%] tracking-0">
                   {event.title}
@@ -130,7 +130,7 @@ const EventList: React.FC = () => {
             </div>
 
             {/* Date and Time */}
-            <div className="flex flex-row items-center gap-3">
+            <div className="flex flex-wrap flex-row items-center gap-3">
               <div className="flex flex-row items-center gap-1">
                 <img src={Gcalendar} alt="calendar" />
                 <p className="text-[12px] font-outfit font-[400px] leading-[130%] tracking-0 text-Grey">
@@ -169,11 +169,13 @@ const EventList: React.FC = () => {
             {/* Event Organasation */}
             <div className="flex flex-row items-center gap-1">
               <img src={PeopleIcon} alt="people" />
-              <span className="font-outfit leading-[130%] tracking-0 text-Grey font-[400px] text-[12px]">{displayName}</span>
+              <span className="font-outfit leading-[130%] tracking-0 text-Grey font-[400px] text-[12px]">
+                {displayName}
+              </span>
             </div>
           </div>
           {/* Action Buttons */}
-          <div className="flex flex-row gap-3">
+          <div className="flex shrink-0 flex-col items-end gap-2 sm:flex-row sm:gap-3">
             <button
               onClick={() => handleCopyLink(event)}
               disabled={deleting === event.id}
