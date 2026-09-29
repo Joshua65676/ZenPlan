@@ -23,7 +23,7 @@ const Hero: React.FC = () => {
                 Get started
               </button>
             </Link>
-            <button className="w-32 h-9.5 border rounded-xl cursor-pointer px-4 py-2.5 border-black flex flex-row gap-2 font-outfit font-[400px] text-[14px] leading-[130%] tracking-[0%] text-black">
+            <button className="w-40 h-9.5 border rounded-xl cursor-pointer px-4 py-2.5 border-black flex flex-row gap-2 font-outfit font-[400px] text-[14px] leading-[130%] tracking-[0%] text-black">
               Get started
               <img src={Arrow} alt="" />
             </button>
